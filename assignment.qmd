@@ -1,0 +1,369 @@
+---
+title: "ETC2420/5242 Assignment 2"
+subtitle: "Meridian Film Studios Slate Analysis"
+author:
+  - "Yunhui Fan"
+  - "Group member 2"
+  - "Group member 3"
+date: today
+format: html
+execute:
+  echo: false
+  warning: false
+  message: false
+  fig-pos: "H"
+  tbl-pos: "H"
+---
+
+# Task 1: Slate Health Check
+
+## 1a Data quality audit and cleaning decisions
+
+```{r}
+#| label: t1-setup-and-clean
+library(tidyverse)
+library(gt)
+library(patchwork)
+
+DATA_PATH <- "data/movies.csv"
+FOCUS <- c("Action", "Comedy", "Drama", "Horror", "Animation")
+
+n0   <- function(x) format(round(x, 0), big.mark = ",", trim = TRUE)
+n1   <- function(x) format(round(x, 1), nsmall = 1)
+n2   <- function(x) format(round(x, 2), nsmall = 2)
+pct1 <- function(x) sprintf("%.1f%%", x)
+
+films_raw <- read_csv(DATA_PATH, show_col_types = FALSE)
+
+films <- films_raw |>
+  mutate(
+    budget_c     = case_when(budget >= 10000 ~ budget, TRUE ~ NA_real_),
+    revenue_c    = case_when(revenue > 0 ~ revenue, TRUE ~ NA_real_),
+    roi_c        = revenue_c / budget_c,
+    log10_budget = log10(budget_c),
+    log10_roi    = log10(roi_c),
+    budget_m     = budget_c / 1e6
+  )
+
+n_films     <- nrow(films_raw)
+n_dup_id    <- sum(duplicated(films_raw$id))
+n_dup_title <- sum(duplicated(films_raw$title))
+n_bud0      <- sum(films_raw$budget == 0, na.rm = TRUE)
+n_bud_small <- sum(films_raw$budget > 0 & films_raw$budget < 10000, na.rm = TRUE)
+n_rev0      <- sum(films_raw$revenue == 0, na.rm = TRUE)
+n_roi_na    <- sum(is.na(films_raw$roi))
+same_rows   <- all(is.na(films_raw$roi) == (films_raw$budget == 0))
+n_fs_na     <- sum(is.na(films_raw$franchise_status))
+n_genre_na  <- sum(is.na(films_raw$primary_genre))
+n_comp_na   <- sum(is.na(films_raw$primary_company)) 
+n_2016      <- sum(films_raw$release_year == 2016, na.rm = TRUE)
+yr_min      <- min(films_raw$release_year, na.rm = TRUE)
+yr_max      <- max(films_raw$release_year, na.rm = TRUE)
+
+genre_stats <- films |>
+  group_by(primary_genre) |>
+  summarise(
+    n = n(),
+    cov_bud = mean(!is.na(budget_c)) * 100,
+    med_bud = median(budget_m, na.rm = TRUE),
+    med_roi = median(roi_c, na.rm = TRUE),
+    q1_roi  = quantile(roi_c, 0.25, na.rm = TRUE, names = FALSE),
+    rec_pct = mean(roi_c >= 1, na.rm = TRUE) * 100,
+    fra_pct = mean(franchise_status == "Franchise") * 100
+  )
+
+fs_stats <- films |>
+  group_by(franchise_status) |>
+  summarise(
+    cov_bud = mean(!is.na(budget_c)) * 100,
+    rec_pct = mean(roi_c >= 1, na.rm = TRUE) * 100
+  )
+
+dec_stats <- films |>
+  filter(!is.na(release_year)) |>
+  mutate(decade_num = floor(release_year / 10) * 10) |>
+  group_by(decade_num) |>
+  summarise(cov_bud = mean(!is.na(budget_c)) * 100)
+
+g_stat <- function(g, stat) {
+  row <- genre_stats[!is.na(genre_stats$primary_genre) & genre_stats$primary_genre == g, ]
+  row[[stat]]
+}
+
+f_stat <- function(s, stat) fs_stats[[stat]][fs_stats$franchise_status == s]
+d_stat <- function(d, stat) {
+  row <- dec_stats[!is.na(dec_stats$decade_num) & dec_stats$decade_num == d, ]
+  row[[stat]]
+}
+
+
+n_usable_bud <- sum(!is.na(films$budget_c))
+n_usable_roi <- sum(!is.na(films$roi_c))
+n_complete   <- sum(!is.na(films$budget_c) & !is.na(films$revenue_c))
+n_over15     <- sum(films$roi_c > 15, na.rm = TRUE)
+pct_usable_bud <- mean(!is.na(films$budget_c)) * 100
+pct_usable_roi <- mean(!is.na(films$roi_c)) * 100
+pct_flop       <- mean(films$roi_c < 1, na.rm = TRUE) * 100
+
+med_budget_m  <- median(films$budget_m, na.rm = TRUE)
+mean_budget_m <- mean(films$budget_m, na.rm = TRUE)
+max_budget_m  <- max(films$budget_m, na.rm = TRUE)
+med_roi       <- median(films$roi_c, na.rm = TRUE)
+q1_roi        <- quantile(films$roi_c, .25, na.rm = TRUE, names = FALSE)
+q3_roi        <- quantile(films$roi_c, .75, na.rm = TRUE, names = FALSE)
+mean_roi      <- mean(films$roi_c, na.rm = TRUE)
+sd_roi        <- sd(films$roi_c, na.rm = TRUE)
+med_logbud    <- median(films$log10_budget, na.rm = TRUE)
+sd_logbud     <- sd(films$log10_budget, na.rm = TRUE)
+n_franchise   <- sum(films$franchise_status == "Franchise")
+
+cc <- films |> filter(!is.na(budget_c), !is.na(revenue_c))
+medbud_fs <- function(s) median(cc$budget_c[cc$franchise_status == s]) / 1e6
+medroi_fs <- function(s) median(cc$roi_c[cc$franchise_status == s])
+share_fs  <- function(s, what) (sum(cc[[what]][cc$franchise_status == s]) / sum(cc[[what]])) * 100
+```
+
+```{r}
+#| label: tbl-t1-audit
+#| tbl-cap: "Data quality audit of the raw film records."
+tibble(
+  Check = c("Films in the file",
+            "budget = 0 (placeholder)",
+            "0 < budget < USD 10,000",
+            "revenue = 0 (placeholder)",
+            "roi missing (= budget = 0 rows)",
+            "Missing genre / company / franchise",
+            "Release year range"),
+  Value = c(n0(n_films),
+            n0(n_bud0),
+            n0(n_bud_small),
+            n0(n_rev0),
+            paste0(n0(n_roi_na), " (", toupper(as.character(same_rows)), ")"),
+            paste(n0(n_genre_na), "/", n0(n_comp_na), "/", n0(n_fs_na)),
+            paste(yr_min, "to", yr_max)),
+  `% of films` = c(pct1(100),
+            pct1(100 * n_bud0 / n_films),
+            pct1(100 * n_bud_small / n_films),
+            pct1(100 * n_rev0 / n_films),
+            pct1(100 * n_roi_na / n_films),
+            paste0(pct1(100 * n_genre_na / n_films), " / ",
+                   pct1(100 * n_comp_na / n_films), " / ",
+                   pct1(100 * n_fs_na / n_films)),
+            "\u2014")
+) |> gt() |>
+  tab_options(
+    table.font.size = "10pt",
+    data_row.padding = px(4),
+    column_labels.padding = px(4),
+    table.width = pct(90),
+    table.margin.left = px(0)
+  )
+```
+
+@tbl-t1-audit lists the issues that had to be resolved first. Zero is used throughout the file as a stand-in for "unknown": `r n0(n_bud0)` films (`r pct1(100 * n_bud0 / n_films)`) record a budget of exactly zero, `r n0(n_bud_small)` a positive budget below the USD 10,000 floor, and `r n0(n_rev0)` zero revenue, while `roi` is missing on exactly those same zero-budget rows (`r toupper(as.character(same_rows))`). Identifiers are otherwise clean, with `r n0(n_dup_id)` duplicate IDs and only `r n0(n_dup_title)` repeated titles. Budgets below USD 10,000 and revenue of zero are therefore recoded as missing, and ROI is recomputed as `revenue_c / budget_c` rather than read from the file's own column. That missingness is not random: budget coverage is `r pct1(g_stat("Documentary", "cov_bud"))` in Documentary against `r pct1(g_stat("Adventure", "cov_bud"))` in Adventure, `r pct1(f_stat("Franchise", "cov_bud"))` for franchises against `r pct1(f_stat("Original", "cov_bud"))` for originals, and falls from `r pct1(d_stat(1950, "cov_bud"))` in the 1950s to `r pct1(d_stat(2000, "cov_bud"))` in the 2000s. After cleaning, `r n0(n_usable_bud)` films (`r pct1(pct_usable_bud)`) have a usable budget and `r n0(n_usable_roi)` (`r pct1(pct_usable_roi)`) a usable ROI.
+
+## 1b Overall distribution of budget and ROI
+
+```{r}
+#| label: tbl-t1-summary
+#| tbl-cap: "Distribution of production budget and ROI across the cleaned slate. Values are shown to three significant figures."
+
+summ_row <- function(x, lab) {
+  tibble(Variable = lab,
+         N        = sum(!is.na(x)),
+         Missing  = sum(is.na(x)),
+         Mean     = mean(x, na.rm = TRUE),
+         SD       = sd(x, na.rm = TRUE),
+         Min      = min(x, na.rm = TRUE),
+         Q1       = quantile(x, .25, na.rm = TRUE, names = FALSE),
+         Median   = median(x, na.rm = TRUE),
+         Q3       = quantile(x, .75, na.rm = TRUE, names = FALSE),
+         Max      = max(x, na.rm = TRUE))
+}
+
+bind_rows(
+  summ_row(films$budget_m,     "Budget (USD m)"),
+  summ_row(films$roi_c,        "ROI (revenue / budget)"),
+  summ_row(films$log10_budget, "log10 budget")
+) |>
+  gt() |>
+  tab_options(
+    table.font.size = "9pt",
+    data_row.padding = px(3),
+    column_labels.padding = px(3),
+    table.width = pct(95)
+  )
+```
+
+```{r}
+#| label: fig-t1-dist
+#| fig-cap: "Overall distribution of production budget (A, B) and ROI (C, D). Dashed lines mark 1x return."
+#| fig-width: 9
+#| fig-height: 4.4
+
+p1 <- films |> filter(!is.na(budget_c)) |>
+  ggplot(aes(x = budget_m)) + geom_histogram(bins = 40) +
+  labs(title = "(A)", x = "Production budget (USD m)", y = "Count") + theme_minimal()
+
+budget_curve <- tibble(
+  log10_budget = seq(4, 9, length.out = 1000),
+  density = dnorm(log10_budget, mean = mean(films$log10_budget, na.rm = TRUE), sd = sd(films$log10_budget, na.rm = TRUE))
+)
+
+p2 <- films |> filter(!is.na(log10_budget)) |>
+  ggplot(aes(x = log10_budget)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 40) +
+  geom_line(data = budget_curve, aes(x = log10_budget, y = density), linewidth = 1) +
+  scale_x_continuous(breaks = 4:9, labels = c("$10k", "$100k", "$1m", "$10m", "$100m", "$1b")) +
+  labs(title = "(B)", x = "Production budget (log scale)", y = "Density") + theme_minimal()
+
+p3 <- films |> filter(!is.na(roi_c), roi_c <= 15) |>
+  ggplot(aes(x = roi_c)) + geom_histogram(bins = 40) +
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  labs(title = "(C)", x = "ROI (revenue / budget)", y = "Count",
+       subtitle = paste0(n_over15, " films exceeding 15x ROI omitted")) + theme_minimal()
+
+p4 <- films |> filter(!is.na(log10_roi)) |>
+  ggplot(aes(x = log10_roi)) + geom_histogram(bins = 40) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  scale_x_continuous(breaks = -2:2, labels = c("0.01x", "0.1x", "1x", "10x", "100x")) +
+  labs(title = "(D)", x = "ROI (log scale)", y = "Count") + theme_minimal()
+
+(p1 + p2) / (p3 + p4)
+```
+
+Panel A of @fig-t1-dist shows raw budget heavily skewed right: median budget is USD `r n1(med_budget_m)` million versus a mean of USD `r n1(mean_budget_m)` million and a maximum of USD `r n0(max_budget_m)` million. On a log-10 scale (Panel B), the distribution is approximately normal. Panel C shows ROI: median ROI is `r n2(med_roi)`, with IQR spanning `r n2(q1_roi)` to `r n2(q3_roi)`. About `r pct1(pct_flop)` of films sit below 1x ROI.
+
+## 1c Slate composition by genre and franchise status
+
+```{r}
+#| label: tbl-t1-franchise
+#| tbl-cap: "Franchise status breakdown restricted to complete cases (N = 3,214)."
+
+cc |>
+  group_by(`Franchise status` = franchise_status) |>
+  summarise(
+    Films = n(),
+    `Med. budget, USD m` = round(median(budget_c) / 1e6, 1),
+    `Med. ROI` = round(median(roi_c), 2),
+    `% recouped` = round(100 * mean(roi_c >= 1), 1),
+    `% revenue` = round(100 * sum(revenue_c) / sum(cc$revenue_c), 1),
+    `% budget` = round(100 * sum(budget_c) / sum(cc$budget_c), 1)
+  ) |> gt() |>
+    tab_options(
+    table.font.size = "8.5pt",
+    data_row.padding = px(2.5),
+    column_labels.padding = px(3),
+    table.width = pct(100),
+    table.margin.left = px(0),
+    table.margin.right = px(0)
+  )
+```
+
+```{r}
+#| label: fig-t1-genre
+#| fig-cap: "Budget (A) and ROI (B) across focus genres. Dashed line indicates 1x ROI."
+#| fig-width: 9.5
+#| fig-height: 2.5
+
+films_focus <- films |> filter(primary_genre %in% FOCUS)
+genre_order <- films_focus |> group_by(primary_genre) |> summarise(m = median(budget_c, na.rm = TRUE)) |> arrange(m) |> pull(primary_genre)
+films_focus <- films_focus |> mutate(primary_genre = factor(primary_genre, levels = genre_order))
+
+p5 <- films_focus |> filter(!is.na(budget_c)) |>
+  ggplot(aes(x = primary_genre, y = log10_budget)) +
+  geom_boxplot(width = 0.45, outlier.shape = NA) +
+  geom_jitter(width = 0.08, height = 0, alpha = 0.12, size = 0.5) +
+  scale_y_continuous(breaks = 5:9, labels = c("$100k", "$1m", "$10m", "$100m", "$1b")) +
+  labs(title = "(A)", x = "Genre", y = "Budget (log scale)") + theme_minimal()
+
+p6 <- films_focus |> filter(!is.na(roi_c)) |>
+  ggplot(aes(x = primary_genre, y = log10_roi)) +
+  geom_boxplot(width = 0.45, outlier.shape = NA) +
+  geom_jitter(width = 0.08, height = 0, alpha = 0.12, size = 0.5) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_y_continuous(breaks = -2:2, labels = c("0.01x", "0.1x", "1x", "10x", "100x")) +
+  labs(title = "(B)", x = "Genre", y = "ROI (log scale)") + theme_minimal()
+
+p5 + p6
+```
+
+```{r}
+#| label: fig-t1-mix
+#| fig-cap: "Franchise proportion across whole slate (A) and focus genres (B)."
+#| fig-width: 9.5
+#| fig-height: 2.5
+
+p7 <- films |> mutate(slate = "Whole slate") |>
+  ggplot(aes(x = slate, fill = franchise_status)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "(A)", x = NULL, y = "Share", fill = "Status") + theme_minimal()
+
+p8 <- films_focus |>
+  ggplot(aes(x = primary_genre, fill = franchise_status)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "(B)", x = "Genre", y = "Share", fill = "Status") + theme_minimal()
+
+p7 + p8
+```
+
+Horror is the cheapest focus genre (median USD `r n0(g_stat("Horror", "med_bud"))` m) and most lucrative (median ROI `r n2(g_stat("Horror", "med_roi"))`, `r pct1(g_stat("Horror", "rec_pct"))` recouped). Animation is expensive (median USD `r n0(g_stat("Animation", "med_bud"))` m) but reliable (`r pct1(g_stat("Animation", "rec_pct"))` recouped). Drama performs weakest (median ROI `r n2(g_stat("Drama", "med_roi"))`). Franchise films constitute `r pct1(100 * n_franchise / n_films)` of titles (@fig-t1-mix). Among complete cases (@tbl-t1-franchise), franchise titles take `r pct1(share_fs("Franchise", "budget_c"))` of budget while yielding `r pct1(share_fs("Franchise", "revenue_c"))` of revenue, outperforming originals on recoupment rate (`r pct1(f_stat("Franchise", "rec_pct"))` vs `r pct1(f_stat("Original", "rec_pct"))`).
+
+## 1d Trends over time and summary for the Head of Production
+
+```{r}
+#| label: tbl-t1-decade
+#| tbl-cap: "Slate composition by decade (decades with N >= 20)."
+
+by_decade <- films |>
+  filter(!is.na(release_year)) |>
+  mutate(decade = paste0(floor(release_year / 10) * 10, "s")) |>
+  group_by(decade) |>
+  summarise(
+    Years = paste0(min(release_year), "-", max(release_year)),
+    Films = n(),
+    `Median budget (USD m)` = round(median(budget_m, na.rm = TRUE), 1),
+    `Median ROI`            = round(median(roi_c, na.rm = TRUE), 2),
+    `% Franchise`           = round(100 * mean(franchise_status == "Franchise"), 1)
+  ) |> filter(Films >= 20)
+
+by_decade |> gt()|>
+tab_options(
+    table.font.size = "9pt",
+    data_row.padding = px(3),
+    column_labels.padding = px(3),
+    table.width = pct(90)
+)
+dec_val <- function(d, col) by_decade[[col]][by_decade$decade == d]
+```
+
+```{r}
+#| label: fig-t1-time
+#| fig-cap: "Decadal trends in median budget (A), median ROI (B), and franchise share (C)."
+#| fig-width: 10
+#| fig-height: 2.6
+
+by_time <- by_decade |> mutate(decade_num = as.numeric(sub("s", "", decade)))
+
+q1 <- ggplot(by_time, aes(x = decade_num, y = `Median budget (USD m)`)) +
+  geom_line(group = 1) + geom_point() + labs(title = "(A)", x = NULL) + theme_minimal()
+
+q2 <- ggplot(by_time, aes(x = decade_num, y = `Median ROI`)) +
+  geom_line(group = 1) + geom_point() + geom_hline(yintercept = 1, linetype = "dashed") +
+  labs(title = "(B)", x = NULL) + theme_minimal()
+
+q3 <- ggplot(by_time, aes(x = decade_num, y = `% Franchise`)) +
+  geom_line(group = 1) + geom_point() + labs(title = "(C)", x = NULL) + theme_minimal()
+
+q1 + q2 + q3
+```
+
+Decadal figures show median budgets peaking at USD `r n0(max(by_decade$'Median budget (USD m)'))` million in the 1990s/2000s and stabilizing since. However, median ROI declined steadily from a peak of `r n2(max(by_decade$'Median ROI'))` in the 1970s to `r n2(min(by_decade$'Median ROI'))` in the 2000s (@fig-t1-time).
+
+## Summary for the Head of Production
+
+Data Completeness: Only `r pct1(pct_usable_bud)` of films have reliable budgets and `r pct1(pct_usable_roi)` have reliable ROI. Unreported figures disproportionately occur in low-performing genres (Comedies/Dramas) and older eras, meaning raw financial averages slightly overstate true performance. Skewness & Metrics: Budget and ROI are heavily right-skewed (`r pct1(pct_flop)` fail to reach 1x ROI). Medians and log-scales must guide strategic decisions rather than means. Portfolio Strategy: Horror provides low capital risk and top ROI (`r pct1(g_stat("Horror", "rec_pct"))` recouped). Animation warrants big budgets due to high reliability (`r pct1(g_stat("Animation", "rec_pct"))` recouped). Action carries high risk (25% fail to recover costs), while Drama shows consistently low returns. Franchises deliver superior returns (`r pct1(f_stat("Franchise", "rec_pct"))` recoupment) and represent high-value investments. Temporal Risk: Modern slate greenlighting faces a tighter margin environment than historical periods. Greenlighting priority should be given to low-budget horror and scalable franchise concepts over mid-budget standalone dramas.
+
+
