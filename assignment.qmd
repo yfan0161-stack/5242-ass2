@@ -3,8 +3,8 @@ title: "ETC2420/5242 Assignment 2"
 subtitle: "Meridian Film Studios Slate Analysis"
 author:
   - "Yunhui Fan"
-  - "Group member 2"
-  - "Group member 3"
+  - "Qingqing Yu"
+  - "Jingye Li"
 date: today
 format: html
 execute:
@@ -365,5 +365,3 @@ Decadal figures show median budgets peaking at USD `r n0(max(by_decade$'Median b
 ## Summary for the Head of Production
 
 Data Completeness: Only `r pct1(pct_usable_bud)` of films have reliable budgets and `r pct1(pct_usable_roi)` have reliable ROI. Unreported figures disproportionately occur in low-performing genres (Comedies/Dramas) and older eras, meaning raw financial averages slightly overstate true performance. Skewness & Metrics: Budget and ROI are heavily right-skewed (`r pct1(pct_flop)` fail to reach 1x ROI). Medians and log-scales must guide strategic decisions rather than means. Portfolio Strategy: Horror provides low capital risk and top ROI (`r pct1(g_stat("Horror", "rec_pct"))` recouped). Animation warrants big budgets due to high reliability (`r pct1(g_stat("Animation", "rec_pct"))` recouped). Action carries high risk (25% fail to recover costs), while Drama shows consistently low returns. Franchises deliver superior returns (`r pct1(f_stat("Franchise", "rec_pct"))` recoupment) and represent high-value investments. Temporal Risk: Modern slate greenlighting faces a tighter margin environment than historical periods. Greenlighting priority should be given to low-budget horror and scalable franchise concepts over mid-budget standalone dramas.
-
-
