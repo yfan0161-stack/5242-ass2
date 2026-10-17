@@ -366,6 +366,147 @@ Decadal figures show median budgets peaking at USD `r n0(max(by_decade$'Median b
 
 Data Completeness: Only `r pct1(pct_usable_bud)` of films have reliable budgets and `r pct1(pct_usable_roi)` have reliable ROI. Unreported figures disproportionately occur in low-performing genres (Comedies/Dramas) and older eras, meaning raw financial averages slightly overstate true performance. Skewness & Metrics: Budget and ROI are heavily right-skewed (`r pct1(pct_flop)` fail to reach 1x ROI). Medians and log-scales must guide strategic decisions rather than means. Portfolio Strategy: Horror provides low capital risk and top ROI (`r pct1(g_stat("Horror", "rec_pct"))` recouped). Animation warrants big budgets due to high reliability (`r pct1(g_stat("Animation", "rec_pct"))` recouped). Action carries high risk (25% fail to recover costs), while Drama shows consistently low returns. Franchises deliver superior returns (`r pct1(f_stat("Franchise", "rec_pct"))` recoupment) and represent high-value investments. Temporal Risk: Modern slate greenlighting faces a tighter margin environment than historical periods. Greenlighting priority should be given to low-budget horror and scalable franchise concepts over mid-budget standalone dramas.
 
+# Task 2: Franchise vs. Original — Investment Strategy
+
+## 2a Comparing the two budget distributions
+
+```{r}
+#| label: t2-setup
+bud_t2 <- films |> filter(!is.na(budget_c))
+
+n_f2 <- sum(bud_t2$franchise_status == "Franchise")
+n_o2 <- sum(bud_t2$franchise_status == "Original")
+
+bud_f2 <- bud_t2 |> filter(franchise_status == "Franchise") |> pull(budget_c)
+bud_o2 <- bud_t2 |> filter(franchise_status == "Original")  |> pull(budget_c)
+
+med_f2 <- median(bud_f2)
+med_o2 <- median(bud_o2)
+diff_obs2 <- med_f2 - med_o2
+
+q_f2 <- quantile(bud_f2, c(.1, .25, .5, .75, .9), names = FALSE)
+q_o2 <- quantile(bud_o2, c(.1, .25, .5, .75, .9), names = FALSE)
+
+sd_logf2 <- sd(log10(bud_f2))
+sd_logo2 <- sd(log10(bud_o2))
+max_f2   <- max(bud_f2)
+max_o2   <- max(bud_o2)
+```
+
+```{r}
+#| label: fig-t2-dist
+#| fig-cap: "Log-10 production budget for the Franchise and Original groups across the whole dataset, with a fitted normal curve and a dashed line at each group median."
+#| fig-width: 9
+#| fig-height: 2.9
+d2 <- bud_t2 |> mutate(log_bud = log10(budget_c))
+
+curve_t2 <- bind_rows(
+  tibble(franchise_status = "Franchise",
+         log_bud = seq(4, 9, length.out = 500),
+         density = dnorm(log_bud, mean = mean(log10(bud_f2)), sd = sd(log10(bud_f2)))),
+  tibble(franchise_status = "Original",
+         log_bud = seq(4, 9, length.out = 500),
+         density = dnorm(log_bud, mean = mean(log10(bud_o2)), sd = sd(log10(bud_o2))))
+)
+
+med_t2 <- tibble(
+  franchise_status = c("Franchise", "Original"),
+  log_med = log10(c(med_f2, med_o2))
+)
+
+d2 |>
+  ggplot(aes(x = log_bud)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 25) +
+  geom_line(data = curve_t2, aes(x = log_bud, y = density), linewidth = 1) +
+  geom_vline(data = med_t2, aes(xintercept = log_med), linetype = "dashed") +
+  facet_wrap(~ franchise_status) +
+  scale_x_continuous(breaks = 5:9,
+                     labels = c("$100k", "$1m", "$10m", "$100m", "$1b")) +
+  labs(x = "Production budget (log scale)", y = "Density") +
+  theme_minimal()
+```
+
+@fig-t2-dist compares the `r n0(n_f2)` franchise and `r n0(n_o2)` original films that carry a usable budget. Both are strongly right-skewed in raw dollars and approximately symmetric on a log-10 scale, so the two groups differ mainly in location and spread, although originals show a longer lower tail. The fitted normal curve is a reasonable approximation in the centre of each distribution, but it overstates the franchise distribution above roughly USD 300 million, where the data are sparse.
+
+Franchises are funded higher across the body of the distribution: the median is USD `r n1(med_f2 / 1e6)` million against USD `r n1(med_o2 / 1e6)` million, about `r n1(med_f2 / med_o2)` times as high, and the gap repeats at the lower quartile (USD `r n1(q_f2[2] / 1e6)` million against USD `r n1(q_o2[2] / 1e6)` million), the upper quartile (USD `r n1(q_f2[4] / 1e6)` million against USD `r n1(q_o2[4] / 1e6)` million) and the 90th percentile (USD `r n0(q_f2[5] / 1e6)` million against USD `r n0(q_o2[5] / 1e6)` million). Spread runs the other way: originals are the more dispersed group on the log scale, with a standard deviation of `r n2(sd_logo2)` against `r n2(sd_logf2)`; they reach lower at the bottom, with a tenth percentile of USD `r n1(q_o2[1] / 1e6)` million against USD `r n1(q_f2[1] / 1e6)` million; and the single largest budget in the file belongs to one original film, at USD `r n0(max_o2 / 1e6)` million against USD `r n0(max_f2 / 1e6)` million for the largest franchise.
+
+## 2b A 95% interval estimate for the difference in medians
+
+```{r}
+#| label: t2-boot
+set.seed(2420)
+boot_diff <- replicate(20000,
+  median(sample(bud_f2, n_f2, replace = TRUE)) -
+  median(sample(bud_o2, n_o2, replace = TRUE))
+)
+
+boot_se2 <- sd(boot_diff)
+boot_ci2 <- quantile(boot_diff, c(.025, .975), names = FALSE)
+```
+
+```{r}
+#| label: tbl-t2-boot
+#| tbl-cap: "Bootstrap interval estimate for the difference in median budget (Franchise minus Original), from 20,000 resamples drawn within each group."
+tibble(
+  Quantity = c("Observed difference (USD m)",
+               "Bootstrap standard error (USD m)",
+               "95% percentile interval (USD m)"),
+  Estimate = c(n1(diff_obs2 / 1e6),
+               n2(boot_se2 / 1e6),
+               paste0(n1(boot_ci2[1] / 1e6), " to ", n1(boot_ci2[2] / 1e6)))
+) |> gt()
+```
+
+The observed difference in median budget, franchise minus original, is USD `r n1(diff_obs2 / 1e6)` million. Resampling 20,000 times within each group gives a bootstrap standard error of USD `r n2(boot_se2 / 1e6)` million and a 95% percentile interval of USD `r n1(boot_ci2[1] / 1e6)` million to USD `r n1(boot_ci2[2] / 1e6)` million (@tbl-t2-boot). The interval lies entirely above zero, so the gap is not attributable to sampling variation. It is nonetheless wide relative to the estimate, which is expected given only `r n0(n_f2)` franchise films and a heavily skewed budget variable, so the gap is better read as a substantial difference in the median budget than as a precise figure.
+
+## 2c Does the evidence support leadership's concern?
+
+```{r}
+#| label: t2-shares
+cc_t2 <- films |> filter(!is.na(budget_c), !is.na(revenue_c))
+
+n_cc2     <- nrow(cc_t2)
+pct_excl2 <- 100 * (1 - n_cc2 / nrow(bud_t2))
+
+share_n_f2   <- 100 * sum(cc_t2$franchise_status == "Franchise") / n_cc2
+share_bud_f2 <- 100 * sum(cc_t2$budget_c[cc_t2$franchise_status == "Franchise"]) / sum(cc_t2$budget_c)
+share_rev_f2 <- 100 * sum(cc_t2$revenue_c[cc_t2$franchise_status == "Franchise"]) / sum(cc_t2$revenue_c)
+rec_f2 <- 100 * mean(cc_t2$roi_c[cc_t2$franchise_status == "Franchise"] >= 1)
+rec_o2 <- 100 * mean(cc_t2$roi_c[cc_t2$franchise_status == "Original"]  >= 1)
+
+share_small_f2     <- 100 * mean(bud_f2 < 1e7)
+share_small_o2     <- 100 * mean(bud_o2 < 1e7)
+share_small20_o2   <- 100 * mean(bud_o2 < 2e7)
+
+hor_o2     <- cc_t2 |> filter(primary_genre == "Horror", franchise_status == "Original")
+rec_hor_o2 <- 100 * mean(hor_o2$roi_c >= 1)
+med_hor_o2 <- median(hor_o2$budget_c)
+```
+
+The cost half of the concern holds up. Franchises are funded higher at the median, at both quartiles and at the 90th percentile, and the interval in @tbl-t2-boot shows the median gap is far too large to be sampling noise. A typical original film is smaller than a typical franchise film at every quantile reported, so "the original slate is cheaper" is correct as stated.
+
+What does not hold up is the description of that slate as "mostly small, low-budget projects". Only `r pct1(share_small_o2)` of original films carry a budget below USD 10 million, against `r pct1(share_small_f2)` of franchises, and even on the more generous reading of "small" as under USD 20 million, fewer than half of originals qualify (`r pct1(share_small20_o2)`). The middle half of the original slate runs from USD `r n1(q_o2[2] / 1e6)` million to USD `r n1(q_o2[4] / 1e6)` million, which is mid-budget rather than micro-budget. Originals are also the more dispersed group, as @fig-t2-dist shows, but that extra spread sits at the cheap end of the range rather than the top.
+
+The revenue premise is not supported. Among the `r n0(n_cc2)` films with complete financials, franchise titles are only `r pct1(share_n_f2)` of the slate, take `r pct1(share_bud_f2)` of production budget and generate `r pct1(share_rev_f2)` of revenue. A group producing `r pct1(share_rev_f2)` of revenue is a valuable group, but it is not carrying the studio, and describing it that way overstates both its current weight and the risk of shifting the slate towards originals. What the franchise group genuinely provides is reliability rather than volume: `r pct1(rec_f2)` of franchise titles recoup their production budget against `r pct1(rec_o2)` of originals.
+
+## 2d Recommended strategy
+
+**Keep the franchise pipeline.**
+Franchise titles convert `r pct1(share_bud_f2)` of production budget into `r pct1(share_rev_f2)` of revenue and recoup at `r pct1(rec_f2)`, against `r pct1(rec_o2)` for originals. Cutting the pipeline to make room for originals would trade a dependable engine for a cheaper but more variable investment, and nothing in the evidence requires that trade.
+
+**Grow the original slate selectively.**
+The comparison does not say originals are a bad investment; it says they are cheaper and more variable.
+The lowest-risk way to add original volume is to fund it where low cost and high recoupment already coincide. Horror is the clearest case: original horror films (n = `r n0(n_hor_o2)`) recoup at `r pct1(rec_hor_o2)`, well above the `r pct1(rec_o2)` that originals achieve as a whole, though still below the franchise rate of `r pct1(rec_f2)`, on a median budget of only USD `r n0(med_hor_o2 / 1e6)` million.
+Originals are more likely to be small, but they are not mostly small: 26.8% carry a budget below USD 10 million (17.6% of franchises), and even under USD 20 million only 44.8% qualify.
+Mid-budget Drama, by contrast, is the weakest category in the slate. Pilot a small number of titles before committing a full slate.
+
+**Balance.**
+Concretely, keep franchise spending at roughly its current level in dollar terms and direct incremental spend to originals, expanding that program only once the pilot titles recoup at rates approaching the original horror benchmark of `r pct1(rec_hor_o2)`; note that pilot sample sizes will be small and can only provide directional evidence.
+That preserves the dependable half of the slate while buying evidence on the more variable half, rather than committing to it on the strength of the budget gap alone.
+
+**Caveats.**
+The comparison is descriptive rather than causal: genre mix and release era differ between the two groups and neither is controlled for here, so the budget gap cannot be read as the price of the franchise label. The revenue shares and recoupment rates are complete-case figures covering `r n0(n_cc2)` of the `r n0(nrow(bud_t2))` films with a usable budget, leaving `r pct1(pct_excl2)` of that group excluded; if missing revenue is concentrated among weaker performers, the recoupment rates reported here are optimistic. Revenue in the file is also gross rather than net of distribution, marketing and participation, so recoupment measures whether a film matched its production budget, not whether it made money for the studio.
+
 # Task3 **Modelling Budgets & Downside Risk**
 
 ## 3a Modelling Universal Pictures’ production budgets
