@@ -370,92 +370,189 @@ Data Completeness: Only `r pct1(pct_usable_bud)` of films have reliable budgets 
 
 ## 3a Modelling Universal Pictures’ production budgets
 
-The production budgets of Universal Pictures films were modelled using three candidate distributions: Normal, Log-normal and Gamma. Before fitting the models, invalid budget observations were excluded according to the data-cleaning criteria. Budgets were expressed in millions of US dollars to make the numerical estimation more stable.
+```{r}
+library(tidyverse)
 
-The three distributions were fitted using maximum likelihood estimation and compared using the Akaike Information Criterion (AIC). A lower AIC indicates a better relative fit among the candidate models, accounting for both model fit and complexity.
+movies <- read_csv("data/movies.csv", show_col_types = FALSE)
 
-| Distribution | AIC      |
-|--------------|----------|
-| Normal       | 2454.148 |
-| Log-normal   | 2349.159 |
-| Gamma        | 2320.146 |
+universal_budget <- movies |>
+  filter(
+    primary_company == "Universal Pictures",
+    is.finite(budget),
+    budget >= 10000
+  ) |>
+  mutate(budget_millions = budget / 1e6)
 
-The Gamma distribution had the lowest AIC (2320.146), followed by the Log-normal distribution (2349.159) and the Normal distribution (2454.148). The AIC difference between the Gamma and Normal models was 134.002, providing strong relative support for the Gamma model among these three candidates. Therefore, the Gamma distribution was selected as the preferred candidate based on AIC.
-
-The model choice was also assessed using Q-Q plots, which compare the observed budget quantiles with the theoretical quantiles expected under each fitted distribution. **\[Insert your Q-Q plot findings here after examining the plots—for example, whether the Gamma model follows the reference line more closely, particularly in the tails.\]** The diagnostic plots provide a visual check of whether the preferred model adequately represents the observed budget distribution.
-
-Overall, the AIC comparison favours the Gamma distribution for modelling Universal Pictures film budgets. This conclusion should be considered alongside the Q-Q plot diagnostics, particularly any departures in the tails, where unusually large production budgets may affect the fit.
+# Check the filtered data
+universal_budget |>
+  summarise(
+    n = n(),
+    min_budget = min(budget),
+    median_budget = median(budget),
+    mean_budget = mean(budget),
+    max_budget = max(budget)
+  )
+```
 
 ```{r}
-library(dplyr)
+ggplot(universal_budget, aes(x = budget_millions)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    bins = 25,
+    fill = "skyblue",
+    colour = "white"
+  ) +
+  geom_density(colour = "red", linewidth = 1) +
+  labs(
+    title = "Budget Distribution of Universal Pictures Films",
+    x = "Budget (US$ millions)",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+universal_budget |>
+  summarise(
+    skewness = mean(
+      (budget_millions - mean(budget_millions))^3
+    ) / sd(budget_millions)^3
+  )
+```
+
+```{r}
 library(fitdistrplus)
-library(readr)
 
-films <- read_csv("data/movies.csv", show_col_types = FALSE)
+budget <- universal_budget$budget_millions
 
+fit_normal <- fitdist(budget, "norm")
+fit_lognormal <- fitdist(budget, "lnorm")
+fit_gamma <- fitdist(budget, "gamma")
 
+aic_results <- tibble(
+  Distribution = c("Normal", "Log-normal", "Gamma"),
+  AIC = c(
+    fit_normal$aic,
+    fit_lognormal$aic,
+    fit_gamma$aic
+  )
+) |>
+  arrange(AIC)
+
+aic_results
+```
+
+```{r}
 par(mfrow = c(1, 3))
 
 qqcomp(
-  list(fit_normal, fit_lognormal, fit_gamma),
-  fitnames = c("Normal", "Log-normal", "Gamma")
+  fit_normal,
+  main = "Normal"
+)
+
+qqcomp(
+  fit_lognormal,
+  main = "Log-normal"
+)
+
+qqcomp(
+  fit_gamma,
+  main = "Gamma"
 )
 
 par(mfrow = c(1, 1))
 ```
 
+After excluding invalid and placeholder budget values below US\$10,000, 243 Universal Pictures films remained. The budget distribution was positively skewed, with a sample skewness of 1.572, suggesting that a symmetric normal distribution may be unsuitable.
+
+Three candidate distributions were fitted: normal, log-normal and gamma. The gamma distribution achieved the lowest AIC (2320.146), compared with 2349.159 for the log-normal distribution and 2454.148 for the normal distribution. The Q-Q plots also suggest that the gamma model provides the closest overall fit, although some deviations remain in the upper tail. Therefore, among the three candidates, the gamma distribution is the preferred model for describing Universal Pictures film budgets.
+
 ## 3b Estimating the 25th percentile of Action ROI
 
-The analysis was extended to films from all production companies, restricting the sample to films whose `primary_genre` was Action. ROI was calculated as worldwide box-office revenue divided by production budget. Films with invalid budgets or zero reported revenue were excluded because the dataset documentation identifies these values as missing-data placeholders.
-
-The sample 25th percentile was used to estimate the downside-risk threshold, representing the ROI below which approximately one quarter of the observed Action films fall. Uncertainty was assessed using two methods: a distribution-free order-statistic confidence interval and a non-parametric percentile bootstrap confidence interval. The order-statistic method uses the sampling distribution of ranks and does not require normally distributed ROI values. The bootstrap estimates uncertainty by repeatedly resampling the observed Action films and recalculating the 25th percentile.
-
-The estimated percentile and both 95% confidence intervals are reported in Table \[X\]. These intervals quantify uncertainty about the population 25th percentile; they are not intervals expected to contain 95% of individual film ROIs.
+```{r}
+films |>
+  summarise(
+    total_rows = n(),
+    has_genre = "primary_genre" %in% names(films),
+    has_budget = "budget" %in% names(films),
+    has_revenue = "revenue" %in% names(films)
+  )
+```
 
 ```{r}
-library(dplyr)
+action_films <- films |>
+  filter(
+    primary_genre == "Action",
+    is.finite(budget),
+    budget >= 10000,
+    is.finite(revenue),
+    revenue > 0
+  ) |>
+  mutate(roi_calc = revenue / budget) |>
+  filter(is.finite(roi_calc))
 
-action_roi <- films %>%
-  filter(primary_genre == "Action",
-         !is.na(budget), budget >= 10000,
-         !is.na(revenue), revenue > 0) %>%
-  mutate(roi = revenue / budget) %>%
-  pull(roi)
+action_films |>
+  summarise(
+    n = n(),
+    roi_q25 = quantile(roi_calc, 0.25),
+    roi_median = median(roi_calc),
+    roi_min = min(roi_calc),
+    roi_max = max(roi_calc)
+  )
+```
 
-n <- length(action_roi)
-q25 <- quantile(action_roi, 0.25, type = 7)
+```{r}
+set.seed(2420)
 
-# Method 1: distribution-free order-statistic CI
-alpha <- 0.05
-k <- max(1, qbinom(alpha / 2, n, 0.25))
-l <- min(n, qbinom(1 - alpha / 2, n, 0.25) + 1)
+# Point estimate
+q25_hat <- quantile(action_films$roi_calc, 0.25)
 
-order_ci <- sort(action_roi)[c(k, l)]
-
-# Method 2: non-parametric percentile bootstrap CI
-set.seed(2026)
-B <- 20000
+# Method 1: Bootstrap percentile interval
+B <- 5000
 
 boot_q25 <- replicate(B, {
-  sample_roi <- sample(action_roi, size = n, replace = TRUE)
-  quantile(sample_roi, 0.25, type = 7)
+  boot_sample <- sample(
+    action_films$roi_calc,
+    size = nrow(action_films),
+    replace = TRUE
+  )
+  quantile(boot_sample, 0.25)
 })
 
-boot_ci <- quantile(boot_q25, c(0.025, 0.975), type = 7)
+boot_ci <- quantile(boot_q25, c(0.025, 0.975))
 
-q25
-order_ci
-boot_ci
+# Method 2: Order-statistic interval
+x <- sort(action_films$roi_calc)
+n <- length(x)
+
+alpha <- 0.05
+lower_index <- qbinom(alpha / 2, n, 0.25)
+upper_index <- qbinom(1 - alpha / 2, n, 0.25) + 1
+
+# Keep indices within valid sample positions
+lower_index <- max(1, lower_index)
+upper_index <- min(n, upper_index)
+
+order_ci <- c(
+  lower = x[lower_index],
+  upper = x[upper_index]
+)
+
+# Display results
+tibble(
+  method = c("Bootstrap percentile", "Order statistic"),
+  estimate = rep(as.numeric(q25_hat), 2),
+  lower_95 = c(boot_ci[1], order_ci[1]),
+  upper_95 = c(boot_ci[2], order_ci[2])
+)
 ```
+
+For Action films across all studios, the estimated 25th percentile of ROI was 0.907. The bootstrap percentile 95% confidence interval was \[0.798, 1.052\], while the order-statistic interval was \[0.794, 1.072\]. Both methods produced the same point estimate, with the order-statistic interval slightly wider. The results suggest that the lower quartile of Action-film ROI is close to 1, although uncertainty remains around this benchmark.
 
 ## 3c Comparison of the percentile estimators
 
-The two confidence intervals should be compared in terms of their endpoints and widths. If the results are similar, this suggests that the estimated downside-risk threshold is reasonably stable across the two methods. If they differ, the difference may reflect their distinct approaches to sampling uncertainty.
-
-The order-statistic interval is based on sample ranks and avoids specifying a parametric distribution for ROI. The percentile bootstrap instead approximates the sampling distribution of the sample 25th percentile by resampling the observed films. Its performance depends on how well the empirical sample represents the target population, particularly around the lower quartile. Consequently, the methods need not produce identical interval limits. The Action ROI distribution and the presence of extreme values should be considered when interpreting the results.
+The two methods produced the same point estimate for the 25th percentile of Action-film ROI (0.907), but their 95% confidence intervals differed slightly. The bootstrap percentile interval was \[0.798, 1.052\], while the order-statistic interval was \[0.794, 1.072\]. The order-statistic interval was slightly wider. Bootstrap estimates the sampling distribution by repeatedly resampling the observed data, whereas the order-statistic method uses the sample’s ranked observations to construct an interval. The Action ROI data contain extreme high values, which may affect the bootstrap distribution and the stability of percentile estimates. Overall, the two methods give similar results, suggesting that the estimated lower-quartile ROI is reasonably consistent across these methods.
 
 ## 3d Recommendation for Finance
 
-For the budget simulator, the recommended distribution should be selected by considering both AIC and the Q–Q diagnostics for Universal Pictures budgets. The selected distribution provides a historical external benchmark for simulating production budgets, rather than a guarantee of Meridian’s future cost structure.
-
-For the Action slate, Finance should use the estimated 25th percentile of ROI, together with its 95% confidence interval, as a historical downside-risk benchmark. This figure describes the lower quarter of the observed revenue-to-budget ratios and should not be interpreted as a prediction for an individual film. ROI is calculated using reported worldwide box-office revenue and production budget; it does not account for marketing, distribution or other costs. Missing financial records and the historical nature of the sample should also be considered when applying these findings to future greenlighting decisions.
+For the budget simulator, the Gamma distribution is recommended for Universal Pictures films because it has the lowest AIC (2320.146) among the three fitted distributions and provides a more realistic fit than the normal and log-normal alternatives. The Q-Q plots should also be considered when assessing the fit, particularly in the tails. For the Action slate across all studios, the estimated 25th percentile of ROI is 0.907, with a bootstrap 95% confidence interval of \[0.798, 1.052\] and an order-statistic interval of \[0.794, 1.072\]. Finance should use 0.907 as the estimated lower-quartile ROI, while recognising the uncertainty indicated by both intervals.
