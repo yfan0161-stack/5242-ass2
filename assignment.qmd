@@ -459,3 +459,213 @@ The order-statistic interval is based on sample ranks and avoids specifying a pa
 For the budget simulator, the recommended distribution should be selected by considering both AIC and the Q–Q diagnostics for Universal Pictures budgets. The selected distribution provides a historical external benchmark for simulating production budgets, rather than a guarantee of Meridian’s future cost structure.
 
 For the Action slate, Finance should use the estimated 25th percentile of ROI, together with its 95% confidence interval, as a historical downside-risk benchmark. This figure describes the lower quarter of the observed revenue-to-budget ratios and should not be interpreted as a prediction for an individual film. ROI is calculated using reported worldwide box-office revenue and production budget; it does not account for marketing, distribution or other costs. Missing financial records and the historical nature of the sample should also be considered when applying these findings to future greenlighting decisions.
+
+# Task 4: Building a Greenlight Risk Model
+
+## 4a Outcome and analysis sample
+
+A flop is defined as worldwide box-office revenue below production budget (ROI < 1). Logistic regression suits this binary outcome and constrains fitted probabilities to 0–1; ordinary linear regression does not, while Poisson regression models counts. Budgets below USD 10,000 and non-positive revenues were excluded as missing placeholders. We used films released by 2016 in Meridian's five focus genres, retaining complete predictor records. The resulting 2,256 films included 574 flops (25.4%). Results apply to this observed financial-data subset, not all releases.
+
+```{r}
+#| label: t4-data
+#| include: false
+library(tidyverse)
+library(brms)
+
+t4_data <- read_csv("data/movies.csv", show_col_types = FALSE) |>
+  filter(release_year <= 2016, budget >= 10000, revenue > 0) |>
+  mutate(
+    roi_c = revenue / budget,
+    flop = as.integer(roi_c < 1),
+    log_budget = log(budget),
+    primary_genre = factor(primary_genre),
+    franchise_status = factor(franchise_status,
+                              levels = c("Original", "Franchise"))
+  ) |>
+  drop_na(primary_genre, franchise_status, log_budget, cast_size) |>
+  filter(primary_genre %in%
+           c("Action", "Comedy", "Drama", "Horror", "Animation")) |>
+  mutate(
+    primary_genre = relevel(droplevels(primary_genre), ref = "Drama"),
+    cast_10 = cast_size / 10
+  )
+
+# Reproduce the original stratified 80/20 split
+set.seed(24205242)
+t4_train_ids <- t4_data |>
+  group_by(flop) |>
+  slice_sample(prop = 0.8) |>
+  ungroup() |>
+  pull(id)
+t4_train <- t4_data |> filter(id %in% t4_train_ids)
+t4_test <- t4_data |> filter(!id %in% t4_train_ids)
+```
+
+## 4b Frequentist and Bayesian models
+
+Both models used genre, franchise status, natural-log budget and cast size per ten actors, with Drama and Original as reference categories. A stratified 80/20 split (seed 24205242) produced 1,804 training and 452 test films. Recorded cast size approximates planned cast size: use at greenlight requires a credible advance estimate, rather than information learned after release. We assume independent film outcomes and additive, linear effects of log budget and cast size on log-odds; related franchise films may challenge independence.
+
+```{r}
+#| label: t4-frequentist
+#| include: false
+t4_freq <- glm(
+  flop ~ primary_genre + franchise_status + log_budget + cast_10,
+  data = t4_train, family = binomial(link = "logit")
+)
+t4_coef <- coef(summary(t4_freq))
+t4_or <- data.frame(
+  Term = rownames(t4_coef),
+  OR = exp(t4_coef[, "Estimate"]),
+  Lower_95 = exp(t4_coef[, "Estimate"] - 1.96 * t4_coef[, "Std. Error"]),
+  Upper_95 = exp(t4_coef[, "Estimate"] + 1.96 * t4_coef[, "Std. Error"])
+)
+```
+
+```{r}
+#| label: t4-bayesian
+#| include: false
+#| cache: true
+# Fit from the submitted source without requiring an external RDS file
+t4_bayes <- brm(
+  formula = flop ~ primary_genre + franchise_status + log_budget + cast_10,
+  data = t4_train,
+  family = bernoulli(link = "logit"),
+  prior = c(
+    prior(normal(0, 1), class = "b"),
+    prior(normal(0, 2.5), class = "Intercept")
+  ),
+  chains = 4, iter = 4000, warmup = 1000,
+  cores = 2, seed = 24205242
+)
+t4_bcoef <- fixef(t4_bayes)
+t4_draws <- posterior::as_draws_df(t4_bayes)
+t4_post_prob <- mean(t4_draws$b_franchise_statusFranchise < 0)
+
+# Sampling diagnostics; retain calculations without large diagnostic output
+t4_sampler <- rstan::get_sampler_params(t4_bayes$fit, inc_warmup = FALSE)
+t4_divergences <- sum(vapply(t4_sampler,
+  function(x) sum(x[, "divergent__"]), numeric(1)))
+t4_depth_hits <- sum(vapply(t4_sampler,
+  function(x) sum(x[, "treedepth__"] >= 10), numeric(1)))
+t4_max_rhat <- max(
+  posterior::summarise_draws(posterior::as_draws_array(t4_bayes))$rhat,
+  na.rm = TRUE
+)
+```
+
+Weakly informative priors were Normal(0, 1) for slopes and Normal(0, 2.5) for the internally centred intercept, on the log-odds scale. A slope prior places about 95% probability on odds ratios between 0.14 and 7.10 per predictor unit. Four chains yielded 12,000 post-warmup draws. Maximum R-hat was `r sprintf("%.3f", t4_max_rhat)`, with `r t4_divergences` divergences and `r t4_depth_hits` maximum-tree-depth hits; the inspected trace plots showed good mixing.
+
+```{r}
+#| label: tbl-t4-models
+#| tbl-cap: "Adjusted odds ratios: frequentist 95% confidence intervals and Bayesian 95% credible intervals."
+#| echo: false
+t4_terms <- c("primary_genreAction", "primary_genreAnimation",
+              "primary_genreComedy", "primary_genreHorror",
+              "franchise_statusFranchise", "log_budget", "cast_10")
+t4_labels <- c("Action vs Drama", "Animation vs Drama", "Comedy vs Drama",
+               "Horror vs Drama", "Franchise vs Original",
+               "Log budget (+1)", "Cast size (+10)")
+t4_f <- t4_or[match(t4_terms, t4_or$Term), ]
+t4_b <- t4_bcoef[t4_terms, , drop = FALSE]
+t4_fmt <- function(est, lo, hi) sprintf("%.2f (%.2f–%.2f)", est, lo, hi)
+t4_model_table <- tibble(
+  Predictor = t4_labels,
+  `Frequentist OR (95% CI)` = t4_fmt(t4_f$OR, t4_f$Lower_95, t4_f$Upper_95),
+  `Bayesian OR (95% CrI)` = t4_fmt(exp(t4_b[, "Estimate"]),
+                                  exp(t4_b[, "Q2.5"]), exp(t4_b[, "Q97.5"]))
+)
+knitr::kable(t4_model_table)
+```
+
+The two approaches agree closely (@tbl-t4-models). Holding other predictors fixed, franchise films have lower flop odds: OR 0.24 (CI 0.12–0.48), versus Bayesian OR 0.27 (CrI 0.14–0.48). Ten additional cast members are associated with OR 0.81 under both models (approximately 0.75–0.87). These are associations, not causal effects or percentage-point probability changes. All 12,000 sampled franchise coefficients were negative, estimating the posterior probability of lower franchise flop odds as approximately 100%, conditional on the model and priors. Comedy is borderline: its frequentist interval narrowly excludes 1, whereas its Bayesian interval includes 1. A confidence interval describes repeated-sampling coverage; a credible interval describes posterior uncertainty under the specified model.
+
+## 4c Test-set performance
+
+We used the training flop proportion (`r sprintf("%.3f", mean(t4_train$flop))`) as a screening threshold, with 0.50 as a benchmark. This deliberately gives more attention to possible flops, which are the minority class. The threshold was not optimised on the test set and does not represent a proven optimal business cost trade-off.
+
+```{r}
+#| label: t4-evaluation
+#| include: false
+t4_prob_freq <- predict(t4_freq, newdata = t4_test, type = "response")
+t4_prob_bayes <- colMeans(posterior_epred(t4_bayes, newdata = t4_test))
+t4_threshold <- mean(t4_train$flop)
+t4_metrics <- function(prob, actual, threshold) {
+  predicted <- as.integer(prob >= threshold)
+  TP <- sum(predicted == 1 & actual == 1)
+  TN <- sum(predicted == 0 & actual == 0)
+  FP <- sum(predicted == 1 & actual == 0)
+  FN <- sum(predicted == 0 & actual == 1)
+  data.frame(Threshold = threshold, TP = TP, TN = TN, FP = FP, FN = FN,
+    Accuracy = (TP + TN) / length(actual),
+    Sensitivity = TP / (TP + FN), Specificity = TN / (TN + FP),
+    Precision = ifelse(TP + FP > 0, TP / (TP + FP), NA_real_))
+}
+t4_performance <- bind_rows(
+  t4_metrics(t4_prob_freq, t4_test$flop, 0.5) |> mutate(Model = "Frequentist"),
+  t4_metrics(t4_prob_freq, t4_test$flop, t4_threshold) |> mutate(Model = "Frequentist"),
+  t4_metrics(t4_prob_bayes, t4_test$flop, 0.5) |> mutate(Model = "Bayesian"),
+  t4_metrics(t4_prob_bayes, t4_test$flop, t4_threshold) |> mutate(Model = "Bayesian")
+)
+```
+
+```{r}
+#| label: tbl-t4-performance
+#| tbl-cap: "Held-out performance (%); flop is the positive outcome. A dash denotes undefined precision."
+#| echo: false
+t4_perf_table <- t4_performance |>
+  select(Model, Threshold, Accuracy, Sensitivity, Specificity, Precision) |>
+  mutate(Threshold = sprintf("%.3f", Threshold),
+    across(c(Accuracy, Sensitivity, Specificity, Precision),
+      ~ ifelse(is.na(.x), "—", sprintf("%.1f", 100 * .x))))
+knitr::kable(t4_perf_table)
+```
+
+```{r}
+#| label: tbl-t4-confusion
+#| tbl-cap: "Bayesian screening confusion matrix: rows are actual outcomes; columns are predictions."
+#| echo: false
+t4_predicted <- as.integer(t4_prob_bayes >= t4_threshold)
+t4_confusion <- table(
+  Actual = factor(t4_test$flop, levels = c(0, 1), labels = c("Non-flop", "Flop")),
+  Predicted = factor(t4_predicted, levels = c(0, 1), labels = c("Non-flop", "Flop"))
+)
+knitr::kable(t4_confusion)
+```
+
+At 0.50 both models predict no flops: 74.6% accuracy merely matches always predicting non-flop. At the lower threshold, the Bayesian model detects 86 of 115 flops (74.8% sensitivity), but falsely flags 181 non-flops; precision is only 32.2%. It therefore supports further review rather than automatic rejection. Neither discrimination nor future performance is guaranteed by these results from one random split.
+
+## 4d Pitches and advice to the Head of Production
+
+```{r}
+#| label: t4-pitches
+#| include: false
+t4_pitches <- tibble(
+  Pitch = c("Original horror", "Original drama", "Franchise action"),
+  primary_genre = factor(c("Horror", "Drama", "Action"),
+                         levels = levels(t4_train$primary_genre)),
+  franchise_status = factor(c("Original", "Original", "Franchise"),
+                            levels = levels(t4_train$franchise_status)),
+  budget_m = c(10, 25, 80), planned_cast = c(15, 25, 40)
+) |>
+  mutate(log_budget = log(budget_m * 1e6), cast_10 = planned_cast / 10)
+t4_pitch_draws <- posterior_epred(t4_bayes, newdata = t4_pitches)
+t4_pitch_results <- t4_pitches |>
+  select(Pitch, budget_m, planned_cast) |>
+  mutate(Flop_probability = colMeans(t4_pitch_draws),
+    Lower_95 = apply(t4_pitch_draws, 2, quantile, probs = 0.025),
+    Upper_95 = apply(t4_pitch_draws, 2, quantile, probs = 0.975))
+```
+
+```{r}
+#| label: tbl-t4-pitches
+#| tbl-cap: "Hypothetical pitches: posterior mean flop probabilities and 95% credible intervals."
+#| echo: false
+t4_pitch_table <- t4_pitch_results |>
+  transmute(Pitch, `Budget (USD m)` = budget_m, Cast = planned_cast,
+    `Flop % (95% CrI)` = t4_fmt(100 * Flop_probability,
+                                100 * Lower_95, 100 * Upper_95),
+    Recommendation = c("Conditional go", "Hold for review", "Conditional go"))
+knitr::kable(t4_pitch_table)
+```
+
+**Management summary.** Provisionally support the horror and franchise-action pitches, subject to normal commercial and budget checks. Hold the original drama for closer review of its costs and revenue assumptions. The intervals quantify uncertainty in each estimated probability, not the outcome of one film. This model is a screening aid: many flags are false alarms, and lower flop probability does not imply higher profit or smaller financial exposure. Results concern five genres with reported financial data; historical selection, franchise dependence and uncertain planned cast sizes limit generalisation. Box office is not studio receipts, and the outcome excludes marketing, distribution and other costs. No pitch is guaranteed to be profitable.
