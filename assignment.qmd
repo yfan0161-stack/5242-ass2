@@ -958,11 +958,11 @@ To ensure quality and cohesion, every task must have at least one “Analyst” 
 
 | Task | Analysts | Reviewers | Target completion date |
 |----|----|----|----|
-| **Task 1** | Minh | Lachlan, Joyn | 15 October |
-| **Task 2** | Lachlan | Joyn, Vinh | 15 October |
-| **Task 3** | Qingqing Yu | Vinh, Lachlan | 16 October |
-| **Task 4** | Vinh | Minh, Lachlan | 16 October |
-| **Final merging, formatting & reproducibility check** | Joyn | Lachlan, Vinh, Minh | 20 October |
+| **Task 1** | Yunhui Fan | Jingye Li, Qingqing Yu | 14 October |
+| **Task 2** | Yunhui Fan | Qingqing Yu, Jingye Li | 15 October |
+| **Task 3** | Qingqing Yu | Jingye Li, Yunhui Fan | 16 October |
+| **Task 4** | Jingye Li | Yunhui Fan, Qingqing Yu | 16 October |
+| **Final merging, formatting & reproducibility check** | Jingye Li | Qingqing Yu, Yunhui Fan | 21 October |
 
 ## Meeting schedule
 
@@ -990,10 +990,10 @@ List of planned synchronous group meetings (via Zoom or in-person).
 
 | Member name | Specific tasks performed | Hours contributed (approx.) |
 |-----------------|-----------------------------------|---------------------|
-| Minh | Wrote the code for the assigned task, explained the interpretation and meaning of the analysis, and reviewed Vinh's Task 4. | 15 hours |
+| Yunhui Fan | Built the shared data pipeline (`data/movies.csv`, placeholder-budget and zero-revenue rules, derived budget/ROI variables). Wrote **Task 1** (data-quality audit, distributional summaries, genre and franchise composition, decade trends) and **Task 2** (franchise-vs-original budget comparison, stratified bootstrap interval for the median difference, complete-case revenue shares, investment recommendation), revising tables and figures over several rounds to fit the page limit.| 24 hours |
 | Qingqing Yu | Conducted Task 3 analysis on film budget distributions and downside risk. Fitted and compared Normal, Gamma, and Log-normal distributions for Universal Pictures budgets using Q-Q plots and AIC. Estimated the 25th percentile of ROI for Action films across all studios using bootstrap percentile and order-statistic methods, compared the confidence intervals, and interpreted the findings for the Finance team. | 8 hours 35 minute |
-| Joyn | \[Describe specific tasks performed and any review contributions.\] | \[Hours\] |
-| Vinh | \[Describe specific tasks performed and any review contributions.\] | \[Hours\] |
+| Jingye Li | \[Describe specific tasks performed and any review contributions.\] | \[Hours\] |
+
 
 # Cross-review table
 
@@ -1001,7 +1001,7 @@ By signing below, you certify that you have reviewed the work of your teammates 
 
 | Task | Reviewed by (name of primary Reviewer) | Key feedback provided |
 |:------------|:---------------------------|:----------------------------|
-| **Task 1** | \[Reviewer name\] | \[Key feedback provided\] |
-| **Task 2** | \[Reviewer name\] | \[Key feedback provided\] |
-| **Task 3** | \[Reviewer name\] | The Q-Q plot comparison was difficult to interpret because the points for all three fitted distributions were overlaid on the same plot, and the wide axis range made it difficult to distinguish their relative fit. Recommended using separate Q-Q plots or clearer panel layouts for each distribution to improve readability and make model comparisons easier. |
-| **Task 4** | \[Reviewer name\] | \[Key feedback provided\] |
+| **Task 1** | \[Jingye Li\] | \["Checked the audit table and the inline R. Asked for the table to be cut from twelve rows to seven with percentages folded into the value column, and for `tab_options()`/`px()`/`pct()` to be dropped as out of scope. Also asked for the Executive Summary to be paragraphs, not bullets, and for the 'MCAR' label to go — it contradicts the sentence it sits in."\] |
+| **Task 2** | \[Qingqing Yu\] | \["Reviewed the bootstrap interval and the complete-case analysis. Asked for the `for`-loop bootstrap to be replaced with `replicate()`, the normal-approximation interval and bias term to be dropped, and the results table cut to three rows. Most importantly, flagged that 'not mostly small' was contradicted by its own P90 evidence, so the claim was rewritten around a longer cheap tail and backed with a direct below-USD-10m test."\] |
+| **Task 3** | \[Yunhui Fan\] | The Q-Q plot comparison was difficult to interpret because the points for all three fitted distributions were overlaid on the same plot, and the wide axis range made it difficult to distinguish their relative fit. Recommended using separate Q-Q plots or clearer panel layouts for each distribution to improve readability and make model comparisons easier. |
+| **Task 4** | \[Qingqing Yu\] | \[Key feedback provided\] |
