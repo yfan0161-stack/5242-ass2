@@ -530,16 +530,13 @@ The revenue premise is not supported. Among the `r n0(n_cc2)` films with complet
 
 ## 2d Recommended strategy
 
-**Keep the franchise pipeline.**
-Franchise titles convert `r pct1(share_bud_f2)` of production budget into `r pct1(share_rev_f2)` of revenue and recoup at `r pct1(rec_f2)`, against `r pct1(rec_o2)` for originals. Cutting the pipeline to make room for originals would trade a dependable engine for a cheaper but more variable investment, and nothing in the evidence requires that trade.
+**Keep the franchise pipeline.** Franchise titles convert `r pct1(share_bud_f2)` of production budget into `r pct1(share_rev_f2)` of revenue and recoup at `r pct1(rec_f2)`, against `r pct1(rec_o2)` for originals. Cutting the pipeline to make room for originals would trade a dependable engine for a cheaper but more variable investment, and nothing in the evidence requires that trade.
 
 **Grow the original slate selectively.** The comparison does not say originals are a bad investment; it says they are cheaper and more variable. The lowest-risk way to add original volume is to fund it where low cost and high recoupment already coincide. Horror is the clearest case: original horror films recoup at `r pct1(rec_hor_o2)`, well above the `r pct1(rec_o2)` that originals achieve as a whole, on a median budget of only USD `r n0(med_hor_o2 / 1e6)` million. Mid-budget Drama, by contrast, is the weakest category in the slate. Pilot a small number of titles before committing a full slate.
 
-**Balance.**
-Concretely, keep franchise spending at roughly its current level in dollar terms and direct incremental spend to originals, expanding that program only once the pilot titles recoup at rates approaching the original horror benchmark of `r pct1(rec_hor_o2)`; note that pilot sample sizes will be small and can only provide directional evidence. That preserves the dependable half of the slate while buying evidence on the more variable half, rather than committing to it on the strength of the budget gap alone.
+**Balance.** Concretely, keep franchise spending at roughly its current level in dollar terms and direct incremental spend to originals, expanding that program only once the pilot titles recoup at rates approaching the original horror benchmark of `r pct1(rec_hor_o2)`; note that pilot sample sizes will be small and can only provide directional evidence. That preserves the dependable half of the slate while buying evidence on the more variable half, rather than committing to it on the strength of the budget gap alone.
 
-**Caveats.**
-The comparison is descriptive rather than causal: genre mix and release era differ between the two groups and neither is controlled for here, so the budget gap cannot be read as the price of the franchise label. The revenue shares and recoupment rates are complete-case figures covering `r n0(n_cc2)` of the `r n0(nrow(bud_t2))` films with a usable budget, leaving `r pct1(pct_excl2)` of that group excluded; if missing revenue is concentrated among weaker performers, the recoupment rates reported here are optimistic. Revenue in the file is also gross rather than net of distribution, marketing and participation, so recoupment measures whether a film matched its production budget, not whether it made money for the studio.
+**Caveats.** The comparison is descriptive rather than causal: genre mix and release era differ between the two groups and neither is controlled for here, so the budget gap cannot be read as the price of the franchise label. The revenue shares and recoupment rates are complete-case figures covering `r n0(n_cc2)` of the `r n0(nrow(bud_t2))` films with a usable budget, leaving `r pct1(pct_excl2)` of that group excluded; if missing revenue is concentrated among weaker performers, the recoupment rates reported here are optimistic. Revenue in the file is also gross rather than net of distribution, marketing and participation, so recoupment measures whether a film matched its production budget, not whether it made money for the studio.
 
 # Task 3: Modelling Budgets & Downside Risk
 
@@ -748,7 +745,7 @@ For the Action slate, Finance should plan around a lower-quartile ROI of approxi
 
 ## 4a Outcome and analysis sample
 
-A flop is defined as worldwide box-office revenue below production budget (ROI < 1). Logistic regression suits this binary outcome and constrains fitted probabilities to 0–1; ordinary linear regression does not, while Poisson regression models counts. Budgets below USD 10,000 and non-positive revenues were excluded as missing placeholders. We used films released by 2016 in Meridian's five focus genres, retaining complete predictor records. The resulting 2,256 films included 574 flops (25.4%). Results apply to this observed financial-data subset, not all releases.
+A flop is defined as worldwide box-office revenue below production budget (ROI \< 1). Logistic regression suits this binary outcome and constrains fitted probabilities to 0–1; ordinary linear regression does not, while Poisson regression models counts. Budgets below USD 10,000 and non-positive revenues were excluded as missing placeholders. We used films released by 2016 in Meridian's five focus genres, retaining complete predictor records. The resulting 2,256 films included 574 flops (25.4%). Results apply to this observed financial-data subset, not all releases.
 
 ```{r}
 #| label: t4-data
