@@ -952,6 +952,18 @@ knitr::kable(t4_pitch_table)
 
 # Appendix
 
+# Task allocation
+
+To ensure quality and cohesion, every task must have at least one “Analyst” and at least one “Reviewer” who verifies the code and logic of the Analysts. We recommend that all members be involved in every Task in some way.
+
+| Task | Analysts | Reviewers | Target completion date |
+|----|----|----|----|
+| **Task 1** | Minh | Lachlan, Joyn | 15 October |
+| **Task 2** | Lachlan | Joyn, Vinh | 15 October |
+| **Task 3** | Joyn | Vinh, Lachlan | 16 October |
+| **Task 4** | Vinh | Minh, Lachlan | 16 October |
+| **Final merging, formatting & reproducibility check** | Joyn | Lachlan, Vinh, Minh | 20 October |
+
 ## Meeting schedule
 
 List of planned synchronous group meetings (via Zoom or in-person).
@@ -973,3 +985,23 @@ List of planned synchronous group meetings (via Zoom or in-person).
     -   **Date/Time/Venue:** 21 October — Online via Zoom
 
     -   **Purpose/Goals:** Reviewed the overall progress and completeness of the assignment, discussed outstanding issues, conducted a final check before submission, and worked together to resolve the remaining problems.
+
+# Contribution summary
+
+| Member name | Specific tasks performed | Hours contributed (approx.) |
+|----|----|----|
+| Minh | Wrote the code for the assigned task, explained the interpretation and meaning of the analysis, and reviewed Vinh's Task 4. | 15 hours |
+| Lachlan | \[Describe specific tasks performed and any review contributions.\] | \[Hours\] |
+| Joyn | \[Describe specific tasks performed and any review contributions.\] | \[Hours\] |
+| Vinh | \[Describe specific tasks performed and any review contributions.\] | \[Hours\] |
+
+# Cross-review table
+
+By signing below, you certify that you have reviewed the work of your teammates and that the final report represents a unified effort.
+
+| Task | Reviewed by (name of primary Reviewer) | Key feedback provided |
+|:--------------|:------------------------------------|:-------------------|
+| **Task 1** | \[Reviewer name\] | \[Key feedback provided\] |
+| **Task 2** | \[Reviewer name\] | \[Key feedback provided\] |
+| **Task 3** | \[Reviewer name\] | \[Key feedback provided\] |
+| **Task 4** | \[Reviewer name\] | \[Key feedback provided\] |
