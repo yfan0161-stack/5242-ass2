@@ -47,7 +47,6 @@ execute:
 </style>
 ```
 
-
 # Task 1: Slate Health Check
 
 ## 1a Data quality audit and cleaning decisions
@@ -950,3 +949,27 @@ knitr::kable(t4_pitch_table)
 ```
 
 **Management summary.** Provisionally support the horror and franchise-action pitches, subject to normal commercial and budget checks. Hold the original drama for closer review of its costs and revenue assumptions. The intervals quantify uncertainty in each estimated probability, not the outcome of one film. This model is a screening aid: many flags are false alarms, and lower flop probability does not imply higher profit or smaller financial exposure. Results concern five genres with reported financial data; historical selection, franchise dependence and uncertain planned cast sizes limit generalisation. Box office is not studio receipts, and the outcome excludes marketing, distribution and other costs. No pitch is guaranteed to be profitable.
+
+# Appendix
+
+## Meeting schedule
+
+List of planned synchronous group meetings (via Zoom or in-person).
+
+-   **Meeting 1**
+
+    -   **Date/Time/Venue:** 20 September — Online via Zoom
+
+    -   **Purpose/Goals:** Discussed the assignment requirements and content, and developed an initial plan for dividing the group tasks.
+
+-   **Meeting 2**
+
+    -   **Date/Time/Venue:** 2 October — In person on campus
+
+    -   **Purpose/Goals:** Finalised the allocation of group tasks, established specific deadlines for each task, and assigned the sections to be reviewed by each group member.
+
+-   **Meeting 3**
+
+    -   **Date/Time/Venue:** 21 October — Online via Zoom
+
+    -   **Purpose/Goals:** Reviewed the overall progress and completeness of the assignment, discussed outstanding issues, conducted a final check before submission, and worked together to resolve the remaining problems.
