@@ -8,7 +8,6 @@ author:
 date: today
 format: html
 execute:
-  echo: false
   warning: false
   message: false
   fig-pos: "H"
@@ -136,7 +135,6 @@ Each point is a 5-year block (1985 = films up to 1989; 2015 = 2015 onwards, part
 The file holds 4,803 films; I analysed the 4,794 that were released and dated. Unknown budgets and revenues are stored as 0 or tiny numbers, so I treated them as missing (about one in five films has no usable budget, one in three no usable ROI); results describe films with recorded figures only.
 
 A typical film costs about \$24M (middle half: \$9M--\$50M) and earns about 2.3 times its budget, but one in four earned less than it cost. Budgets differ much more by genre than returns do, and only about 5% of films are Franchise. The typical budget has been flat at about \$25M since the mid-2000s, median returns have crept up, and the franchise share has roughly doubled to about 12%, which is worth monitoring.
-{{< pagebreak >}}
 
 # Task 2: Franchise vs. Original: Investment Strategy
 
