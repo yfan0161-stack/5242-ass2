@@ -15,6 +15,39 @@ execute:
   tbl-pos: "H"
 ---
 
+```{=html}
+<style>
+
+@media print {
+  @page { size: A4; margin: 14mm; }
+  html, body { font-size: 10.5pt !important; }
+  body { line-height: 1.25 !important; color: #111 !important; }
+  main.content { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  #quarto-content { display: block !important; padding: 0 !important; }
+  #quarto-margin-sidebar, #quarto-sidebar, nav, .anchorjs-link { display: none !important; }
+  #title-block-header { margin-bottom: 9pt !important; }
+  #title-block-header .title { font-size: 19pt !important; }
+  #title-block-header .subtitle { font-size: 12pt !important; }
+  h1 { font-size: 16pt !important; margin: 10pt 0 6pt !important; }
+  h2 { font-size: 12pt !important; margin: 8pt 0 4pt !important; }
+  h1, h2, h3, figcaption, caption { break-after: avoid; }
+  p { margin: 0 0 5pt !important; orphans: 3; widows: 3; }
+  section.level1:not(:first-of-type) { break-before: page; }
+  .cell-output-display, .quarto-float, figure { break-inside: avoid; }
+  figure, .quarto-float { margin: 5pt 0 !important; }
+  figcaption, .quarto-float-caption { font-size: 9pt !important; line-height: 1.2 !important; }
+  table { font-size: 9pt !important; width: 100% !important; }
+  .gt_table { font-size: 9pt !important; width: 100% !important; }
+  .gt_row, .gt_col_heading, th, td { padding-top: 2px !important; padding-bottom: 2px !important; }
+  .gt_table p { margin: 0 !important; }
+  pre { font-size: 8pt !important; line-height: 1.15 !important; padding: 4pt !important; }
+  img { max-width: 100% !important; height: auto; }
+  a { color: inherit !important; text-decoration: none !important; }
+}
+</style>
+```
+
+
 # Task 1: Slate Health Check
 
 ## 1a Data quality audit and cleaning decisions
@@ -124,6 +157,7 @@ share_fs  <- function(s, what) (sum(cc[[what]][cc$franchise_status == s]) / sum(
 ```
 
 ```{r}
+#| include: false
 #| label: tbl-t1-audit
 #| tbl-cap: "Data quality audit of the raw film records."
 tibble(
@@ -160,7 +194,7 @@ tibble(
   )
 ```
 
-@tbl-t1-audit lists the issues that had to be resolved first. Zero is used throughout the file as a stand-in for "unknown": `r n0(n_bud0)` films (`r pct1(100 * n_bud0 / n_films)`) record a budget of exactly zero, `r n0(n_bud_small)` a positive budget below the USD 10,000 floor, and `r n0(n_rev0)` zero revenue, while `roi` is missing on exactly those same zero-budget rows (`r toupper(as.character(same_rows))`). Identifiers are otherwise clean, with `r n0(n_dup_id)` duplicate IDs and only `r n0(n_dup_title)` repeated titles. Budgets below USD 10,000 and revenue of zero are therefore recoded as missing, and ROI is recomputed as `revenue_c / budget_c` rather than read from the file's own column. That missingness is not random: budget coverage is `r pct1(g_stat("Documentary", "cov_bud"))` in Documentary against `r pct1(g_stat("Adventure", "cov_bud"))` in Adventure, `r pct1(f_stat("Franchise", "cov_bud"))` for franchises against `r pct1(f_stat("Original", "cov_bud"))` for originals, and falls from `r pct1(d_stat(1950, "cov_bud"))` in the 1950s to `r pct1(d_stat(2000, "cov_bud"))` in the 2000s. After cleaning, `r n0(n_usable_bud)` films (`r pct1(pct_usable_bud)`) have a usable budget and `r n0(n_usable_roi)` (`r pct1(pct_usable_roi)`) a usable ROI.
+The data audit identified missing and placeholder financial values. Zero is used throughout the file as a stand-in for "unknown": `r n0(n_bud0)` films (`r pct1(100 * n_bud0 / n_films)`) record a budget of exactly zero, `r n0(n_bud_small)` a positive budget below the USD 10,000 floor, and `r n0(n_rev0)` zero revenue, while `roi` is missing on exactly those same zero-budget rows (`r toupper(as.character(same_rows))`). Identifiers are otherwise clean, with `r n0(n_dup_id)` duplicate IDs and only `r n0(n_dup_title)` repeated titles. Budgets below USD 10,000 and revenue of zero are therefore recoded as missing, and ROI is recomputed as `revenue_c / budget_c` rather than read from the file's own column. That missingness is not random: budget coverage is `r pct1(g_stat("Documentary", "cov_bud"))` in Documentary against `r pct1(g_stat("Adventure", "cov_bud"))` in Adventure, `r pct1(f_stat("Franchise", "cov_bud"))` for franchises against `r pct1(f_stat("Original", "cov_bud"))` for originals, and falls from `r pct1(d_stat(1950, "cov_bud"))` in the 1950s to `r pct1(d_stat(2000, "cov_bud"))` in the 2000s. After cleaning, `r n0(n_usable_bud)` films (`r pct1(pct_usable_bud)`) have a usable budget and `r n0(n_usable_roi)` (`r pct1(pct_usable_roi)`) a usable ROI.
 
 ## 1b Overall distribution of budget and ROI
 
@@ -182,16 +216,18 @@ summ_row <- function(x, lab) {
 }
 
 bind_rows(
-  summ_row(films$budget_m,     "Budget (USD m)"),
-  summ_row(films$roi_c,        "ROI (revenue / budget)"),
+  summ_row(films$budget_m, "Budget (USD m)"),
+  summ_row(films$roi_c, "ROI (revenue / budget)"),
   summ_row(films$log10_budget, "log10 budget")
 ) |>
   gt() |>
-  tab_options(
-    table.font.size = "9pt",
-    data_row.padding = px(3),
-    column_labels.padding = px(3),
-    table.width = pct(95)
+  gt::fmt_number(
+    columns = c(N, Missing),
+    decimals = 0
+  ) |>
+  gt::fmt_number(
+    columns = c(Mean, SD, Min, Q1, Median, Q3, Max),
+    n_sigfig = 3
   )
 ```
 
@@ -199,7 +235,7 @@ bind_rows(
 #| label: fig-t1-dist
 #| fig-cap: "Overall distribution of production budget (A, B) and ROI (C, D). Dashed lines mark 1x return."
 #| fig-width: 9
-#| fig-height: 4.4
+#| fig-height: 3.7
 
 p1 <- films |> filter(!is.na(budget_c)) |>
   ggplot(aes(x = budget_m)) + geom_histogram(bins = 40) +
@@ -264,7 +300,7 @@ cc |>
 #| label: fig-t1-genre
 #| fig-cap: "Budget (A) and ROI (B) across focus genres. Dashed line indicates 1x ROI."
 #| fig-width: 9.5
-#| fig-height: 2.5
+#| fig-height: 2.2
 
 films_focus <- films |> filter(primary_genre %in% FOCUS)
 genre_order <- films_focus |> group_by(primary_genre) |> summarise(m = median(budget_c, na.rm = TRUE)) |> arrange(m) |> pull(primary_genre)
@@ -292,7 +328,7 @@ p5 + p6
 #| label: fig-t1-mix
 #| fig-cap: "Franchise proportion across whole slate (A) and focus genres (B)."
 #| fig-width: 9.5
-#| fig-height: 2.5
+#| fig-height: 2.2
 
 p7 <- films |> mutate(slate = "Whole slate") |>
   ggplot(aes(x = slate, fill = franchise_status)) +
@@ -314,6 +350,7 @@ Horror is the cheapest focus genre (median USD `r n0(g_stat("Horror", "med_bud")
 ## 1d Trends over time and summary for the Head of Production
 
 ```{r}
+#| include: false
 #| label: tbl-t1-decade
 #| tbl-cap: "Slate composition by decade (decades with N >= 20)."
 
@@ -343,7 +380,7 @@ dec_val <- function(d, col) by_decade[[col]][by_decade$decade == d]
 #| label: fig-t1-time
 #| fig-cap: "Decadal trends in median budget (A), median ROI (B), and franchise share (C)."
 #| fig-width: 10
-#| fig-height: 2.6
+#| fig-height: 2.2
 
 by_time <- by_decade |> mutate(decade_num = as.numeric(sub("s", "", decade)))
 
@@ -362,9 +399,11 @@ q1 + q2 + q3
 
 Decadal figures show median budgets peaking at USD `r n0(max(by_decade$'Median budget (USD m)'))` million in the 1990s/2000s and stabilizing since. However, median ROI declined steadily from a peak of `r n2(max(by_decade$'Median ROI'))` in the 1970s to `r n2(min(by_decade$'Median ROI'))` in the 2000s (@fig-t1-time).
 
-## Summary for the Head of Production
+### Summary for the Head of Production
 
-Data Completeness: Only `r pct1(pct_usable_bud)` of films have reliable budgets and `r pct1(pct_usable_roi)` have reliable ROI. Unreported figures disproportionately occur in low-performing genres (Comedies/Dramas) and older eras, meaning raw financial averages slightly overstate true performance. Skewness & Metrics: Budget and ROI are heavily right-skewed (`r pct1(pct_flop)` fail to reach 1x ROI). Medians and log-scales must guide strategic decisions rather than means. Portfolio Strategy: Horror provides low capital risk and top ROI (`r pct1(g_stat("Horror", "rec_pct"))` recouped). Animation warrants big budgets due to high reliability (`r pct1(g_stat("Animation", "rec_pct"))` recouped). Action carries high risk (25% fail to recover costs), while Drama shows consistently low returns. Franchises deliver superior returns (`r pct1(f_stat("Franchise", "rec_pct"))` recoupment) and represent high-value investments. Temporal Risk: Modern slate greenlighting faces a tighter margin environment than historical periods. Greenlighting priority should be given to low-budget horror and scalable franchise concepts over mid-budget standalone dramas.
+Only 77.7% of films have usable budgets and 66.9% usable ROI after treating placeholder financial values as missing. Coverage differs by genre, franchise status and decade, so comparisons may be affected by selection. Median budget is USD 24 million and median ROI is 2.30; 24.4% of observed films fail to recover their production budget. Medians and log scales better describe these skewed distributions than means.
+
+Horror combines low budgets with relatively high recoupment, while franchises recover production budgets more often than originals (94.1% versus 74.2% among complete cases). These patterns support selective investigation of horror and franchise projects, rather than guaranteeing their success. Median ROI fell from 7.93 in the 1970s to 1.97 in the 2000s before recovering to 2.42 in the 2010s. Historical selection and unadjusted dollar values limit comparisons across decades; box-office revenue also excludes marketing, distribution and other costs.
 
 # Task 2: Franchise vs. Original — Investment Strategy
 
@@ -457,7 +496,7 @@ tibble(
 ) |> gt()
 ```
 
-The observed difference in median budget, franchise minus original, is USD `r n1(diff_obs2 / 1e6)` million. Resampling 20,000 times within each group gives a bootstrap standard error of USD `r n2(boot_se2 / 1e6)` million and a 95% percentile interval of USD `r n1(boot_ci2[1] / 1e6)` million to USD `r n1(boot_ci2[2] / 1e6)` million (@tbl-t2-boot). The interval lies entirely above zero, so the gap is not attributable to sampling variation. It is nonetheless wide relative to the estimate, which is expected given only `r n0(n_f2)` franchise films and a heavily skewed budget variable, so the gap is better read as a substantial difference in the median budget than as a precise figure.
+The observed difference in median budget, franchise minus original, is USD `r n1(diff_obs2 / 1e6)` million. Resampling 20,000 times within each group gives a bootstrap standard error of USD `r n2(boot_se2 / 1e6)` million and a 95% percentile interval of USD `r n1(boot_ci2[1] / 1e6)` million to USD `r n1(boot_ci2[2] / 1e6)` million (@tbl-t2-boot). The 95% bootstrap interval lies entirely above zero, providing evidence that the population median budget is higher for franchise films than for original films. It is nonetheless wide relative to the estimate, which is expected given only `r n0(n_f2)` franchise films and a heavily skewed budget variable, so the gap is better read as a substantial difference in the median budget than as a precise figure.
 
 ## 2c Does the evidence support leadership's concern?
 
@@ -483,7 +522,7 @@ rec_hor_o2 <- 100 * mean(hor_o2$roi_c >= 1)
 med_hor_o2 <- median(hor_o2$budget_c)
 ```
 
-The cost half of the concern holds up. Franchises are funded higher at the median, at both quartiles and at the 90th percentile, and the interval in @tbl-t2-boot shows the median gap is far too large to be sampling noise. A typical original film is smaller than a typical franchise film at every quantile reported, so "the original slate is cheaper" is correct as stated.
+The cost half of the concern holds up. Franchises are funded higher at the median, at both quartiles and at the 90th percentile, and the interval in @tbl-t2-boot provides evidence that franchise films have a higher population median budget. A typical original film is smaller than a typical franchise film at every quantile reported, so "the original slate is cheaper" is correct as stated.
 
 What does not hold up is the description of that slate as "mostly small, low-budget projects". Only `r pct1(share_small_o2)` of original films carry a budget below USD 10 million, against `r pct1(share_small_f2)` of franchises, and even on the more generous reading of "small" as under USD 20 million, fewer than half of originals qualify (`r pct1(share_small20_o2)`). The middle half of the original slate runs from USD `r n1(q_o2[2] / 1e6)` million to USD `r n1(q_o2[4] / 1e6)` million, which is mid-budget rather than micro-budget. Originals are also the more dispersed group, as @fig-t2-dist shows, but that extra spread sits at the cheap end of the range rather than the top.
 
@@ -502,11 +541,12 @@ Concretely, keep franchise spending at roughly its current level in dollar terms
 **Caveats.**
 The comparison is descriptive rather than causal: genre mix and release era differ between the two groups and neither is controlled for here, so the budget gap cannot be read as the price of the franchise label. The revenue shares and recoupment rates are complete-case figures covering `r n0(n_cc2)` of the `r n0(nrow(bud_t2))` films with a usable budget, leaving `r pct1(pct_excl2)` of that group excluded; if missing revenue is concentrated among weaker performers, the recoupment rates reported here are optimistic. Revenue in the file is also gross rather than net of distribution, marketing and participation, so recoupment measures whether a film matched its production budget, not whether it made money for the studio.
 
-# Task3 **Modelling Budgets & Downside Risk**
+# Task 3: Modelling Budgets & Downside Risk
 
 ## 3a Modelling Universal Pictures’ production budgets
 
 ```{r}
+#| include: false
 library(tidyverse)
 
 movies <- read_csv("data/movies.csv", show_col_types = FALSE)
@@ -531,6 +571,8 @@ universal_budget |>
 ```
 
 ```{r}
+#| label: fig-t3-budget-dist
+#| fig-cap: "Distribution of production budgets for Universal Pictures films."
 ggplot(universal_budget, aes(x = budget_millions)) +
   geom_histogram(
     aes(y = after_stat(density)),
@@ -557,6 +599,8 @@ universal_budget |>
 ```
 
 ```{r}
+#| label: tbl-t3-aic
+#| tbl-cap: "AIC comparison of candidate models for Universal Pictures production budgets."
 library(fitdistrplus)
 
 budget <- universal_budget$budget_millions
@@ -575,10 +619,12 @@ aic_results <- tibble(
 ) |>
   arrange(AIC)
 
-aic_results
+knitr::kable(aic_results, digits = 1)
 ```
 
 ```{r}
+#| label: fig-t3-budget-qq
+#| fig-cap: "Q–Q plots comparing normal, log-normal and gamma models for Universal Pictures production budgets."
 par(mfrow = c(1, 3))
 
 qqcomp(
@@ -599,9 +645,9 @@ qqcomp(
 par(mfrow = c(1, 1))
 ```
 
-After excluding invalid and placeholder budget values below US\$10,000, 243 Universal Pictures films remained. The budget distribution was positively skewed, with a sample skewness of 1.572, suggesting that a symmetric normal distribution may be unsuitable.
+After excluding invalid and placeholder budget values below US\$10,000, 243 Universal Pictures films remained. The budget distribution (@fig-t3-budget-dist) was positively skewed, with a sample skewness of 1.57, suggesting that a symmetric normal distribution may be unsuitable.
 
-Three candidate distributions were fitted: normal, log-normal and gamma. The gamma distribution achieved the lowest AIC (2320.146), compared with 2349.159 for the log-normal distribution and 2454.148 for the normal distribution. The Q-Q plots also suggest that the gamma model provides the closest overall fit, although some deviations remain in the upper tail. Therefore, among the three candidates, the gamma distribution is the preferred model for describing Universal Pictures film budgets.
+Three candidate distributions were fitted: normal, log-normal and gamma. The gamma distribution achieved the lowest AIC (2320.1), compared with 2349.2 for the log-normal distribution and 2454.1 for the normal distribution (@tbl-t3-aic). The Q–Q plots (@fig-t3-budget-qq) also suggest that the gamma model provides the closest overall fit, although some deviations remain in the upper tail. Therefore, among the three candidates, the gamma distribution is the preferred model for describing Universal Pictures film budgets.
 
 ## 3b Estimating the 25th percentile of Action ROI
 
@@ -638,6 +684,8 @@ action_films |>
 ```
 
 ```{r}
+#| label: tbl-t3-roi-ci
+#| tbl-cap: "Estimated 25th percentile of Action-film ROI and 95% confidence intervals."
 set.seed(2420)
 
 # Point estimate
@@ -676,25 +724,25 @@ order_ci <- c(
 
 # Display results
 tibble(
-  method = c("Bootstrap percentile", "Order statistic"),
-  estimate = rep(as.numeric(q25_hat), 2),
-  lower_95 = c(boot_ci[1], order_ci[1]),
-  upper_95 = c(boot_ci[2], order_ci[2])
-)
+  Method = c("Bootstrap percentile", "Order statistic"),
+  Estimate = rep(as.numeric(q25_hat), 2),
+  `Lower 95% CI` = c(boot_ci[1], order_ci[1]),
+  `Upper 95% CI` = c(boot_ci[2], order_ci[2])
+) |>
+  knitr::kable(digits = 3)
 ```
 
 For Action films across all studios, the estimated 25th percentile of ROI was 0.907. The bootstrap percentile 95% confidence interval was \[0.798, 1.052\], while the order-statistic interval was \[0.794, 1.072\]. Both methods produced the same point estimate, with the order-statistic interval slightly wider. The results suggest that the lower quartile of Action-film ROI is close to 1, although uncertainty remains around this benchmark.
 
 ## 3c Comparison of the percentile estimators
 
-The two methods produced the same point estimate for the 25th percentile of Action-film ROI (0.907), but their 95% confidence intervals differed slightly. The bootstrap percentile interval was \[0.798, 1.052\], while the order-statistic interval was \[0.794, 1.072\]. The order-statistic interval was slightly wider. Bootstrap estimates the sampling distribution by repeatedly resampling the observed data, whereas the order-statistic method uses the sample’s ranked observations to construct an interval. The Action ROI data contain extreme high values, which may affect the bootstrap distribution and the stability of percentile estimates. Overall, the two methods give similar results, suggesting that the estimated lower-quartile ROI is reasonably consistent across these methods.
+Both methods estimate the 25th percentile as 0.907 and give similar 95% confidence intervals (@tbl-t3-roi-ci). The order-statistic interval is slightly wider. The bootstrap method resamples the observed films, whereas the order-statistic method uses ranked observations and binomial probabilities to obtain interval bounds. Both intervals include 1, so the population lower quartile could lie on either side of the production-budget recoupment benchmark.
 
 ## 3d Recommendation for Finance
 
-<<<<<<< HEAD
-For the budget simulator, the recommended distribution should be selected by considering both AIC and the Q–Q diagnostics for Universal Pictures budgets. The selected distribution provides a historical external benchmark for simulating production budgets, rather than a guarantee of Meridian’s future cost structure.
+For the budget simulator, we recommend the gamma distribution for Universal Pictures’ production budgets because it has the lowest AIC among the three candidates and is supported by the Q–Q diagnostics. This model provides a historical benchmark rather than a guarantee of Meridian’s future cost structure.
 
-For the Action slate, Finance should use the estimated 25th percentile of ROI, together with its 95% confidence interval, as a historical downside-risk benchmark. This figure describes the lower quarter of the observed revenue-to-budget ratios and should not be interpreted as a prediction for an individual film. ROI is calculated using reported worldwide box-office revenue and production budget; it does not account for marketing, distribution or other costs. Missing financial records and the historical nature of the sample should also be considered when applying these findings to future greenlighting decisions.
+For the Action slate, Finance should plan around a lower-quartile ROI of approximately 0.91: about one quarter of films in the observed sample earned less than 91 cents in worldwide box-office revenue per dollar of production budget. The two 95% confidence intervals are approximately 0.80–1.05 and 0.79–1.07, indicating uncertainty around the 1x production-budget recoupment benchmark. This figure describes the lower quarter of the observed revenue-to-budget ratios and should not be interpreted as a prediction for an individual film. ROI is calculated using reported worldwide box-office revenue and production budget; it does not account for marketing, distribution or other costs. Missing financial records and the historical nature of the sample should also be considered when applying these findings to future greenlighting decisions.
 
 # Task 4: Building a Greenlight Risk Model
 
@@ -849,7 +897,7 @@ t4_performance <- bind_rows(
 #| tbl-cap: "Held-out performance (%); flop is the positive outcome. A dash denotes undefined precision."
 #| echo: false
 t4_perf_table <- t4_performance |>
-  select(Model, Threshold, Accuracy, Sensitivity, Specificity, Precision) |>
+  dplyr::select(Model, Threshold, Accuracy, Sensitivity, Specificity, Precision) |>
   mutate(Threshold = sprintf("%.3f", Threshold),
     across(c(Accuracy, Sensitivity, Specificity, Precision),
       ~ ifelse(is.na(.x), "—", sprintf("%.1f", 100 * .x))))
@@ -886,7 +934,7 @@ t4_pitches <- tibble(
   mutate(log_budget = log(budget_m * 1e6), cast_10 = planned_cast / 10)
 t4_pitch_draws <- posterior_epred(t4_bayes, newdata = t4_pitches)
 t4_pitch_results <- t4_pitches |>
-  select(Pitch, budget_m, planned_cast) |>
+  dplyr::select(Pitch, budget_m, planned_cast) |>
   mutate(Flop_probability = colMeans(t4_pitch_draws),
     Lower_95 = apply(t4_pitch_draws, 2, quantile, probs = 0.025),
     Upper_95 = apply(t4_pitch_draws, 2, quantile, probs = 0.975))

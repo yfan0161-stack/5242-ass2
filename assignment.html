@@ -2,17 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Yunhui Fan">
-<meta name="author" content="Group member 2">
-<meta name="author" content="Group member 3">
-<meta name="dcterms.date" content="2026-10-15">
+<meta name="author" content="Qingqing Yu">
+<meta name="author" content="Jingye Li">
+<meta name="dcterms.date" content="2026-10-18">
 
 <title>ETC2420/5242 Assignment 2</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -30,15 +33,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="assignment_files/libs/clipboard/clipboard.min.js"></script>
 <script src="assignment_files/libs/quarto-html/quarto.js" type="module"></script>
 <script src="assignment_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="assignment_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="assignment_files/libs/quarto-html/popper.min.js"></script>
 <script src="assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="assignment_files/libs/quarto-html/anchor.min.js"></script>
 <link href="assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="assignment_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="assignment_files/libs/quarto-html/quarto-syntax-highlighting-7c69b197886ae2a34062761d21e44731.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="assignment_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="assignment_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="assignment_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -63,15 +65,15 @@ ul.task-list li input[type="checkbox"] {
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
              <p>Yunhui Fan </p>
-             <p>Group member 2 </p>
-             <p>Group member 3 </p>
+             <p>Qingqing Yu </p>
+             <p>Jingye Li </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 15, 2026</p>
+      <p class="date">October 18, 2026</p>
     </div>
   </div>
   
@@ -83,522 +85,40 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<style>
+
+@media print {
+  @page { size: A4; margin: 14mm; }
+  html, body { font-size: 10.5pt !important; }
+  body { line-height: 1.25 !important; color: #111 !important; }
+  main.content { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  #quarto-content { display: block !important; padding: 0 !important; }
+  #quarto-margin-sidebar, #quarto-sidebar, nav, .anchorjs-link { display: none !important; }
+  #title-block-header { margin-bottom: 9pt !important; }
+  #title-block-header .title { font-size: 19pt !important; }
+  #title-block-header .subtitle { font-size: 12pt !important; }
+  h1 { font-size: 16pt !important; margin: 10pt 0 6pt !important; }
+  h2 { font-size: 12pt !important; margin: 8pt 0 4pt !important; }
+  h1, h2, h3, figcaption, caption { break-after: avoid; }
+  p { margin: 0 0 5pt !important; orphans: 3; widows: 3; }
+  section.level1:not(:first-of-type) { break-before: page; }
+  .cell-output-display, .quarto-float, figure { break-inside: avoid; }
+  figure, .quarto-float { margin: 5pt 0 !important; }
+  figcaption, .quarto-float-caption { font-size: 9pt !important; line-height: 1.2 !important; }
+  table { font-size: 9pt !important; width: 100% !important; }
+  .gt_table { font-size: 9pt !important; width: 100% !important; }
+  .gt_row, .gt_col_heading, th, td { padding-top: 2px !important; padding-bottom: 2px !important; }
+  .gt_table p { margin: 0 !important; }
+  pre { font-size: 8pt !important; line-height: 1.15 !important; padding: 4pt !important; }
+  img { max-width: 100% !important; height: auto; }
+  a { color: inherit !important; text-decoration: none !important; }
+}
+</style>
 <section id="task-1-slate-health-check" class="level1">
 <h1>Task 1: Slate Health Check</h1>
 <section id="a-data-quality-audit-and-cleaning-decisions" class="level2">
 <h2 class="anchored" data-anchor-id="a-data-quality-audit-and-cleaning-decisions">1a Data quality audit and cleaning decisions</h2>
-<div class="cell">
-<div id="tbl-t1-audit" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t1-audit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Data quality audit of the raw film records.
-</figcaption>
-<div aria-describedby="tbl-t1-audit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<div id="gviinuogqi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gviinuogqi table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#gviinuogqi thead, #gviinuogqi tbody, #gviinuogqi tfoot, #gviinuogqi tr, #gviinuogqi td, #gviinuogqi th {
-  border-style: none;
-}
-
-#gviinuogqi p {
-  margin: 0;
-  padding: 0;
-}
-
-#gviinuogqi .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: 0px;
-  margin-right: auto;
-  color: #333333;
-  font-size: 10pt;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: 90%;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#gviinuogqi .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#gviinuogqi .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#gviinuogqi .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 4px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#gviinuogqi .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#gviinuogqi .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#gviinuogqi .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#gviinuogqi .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#gviinuogqi .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#gviinuogqi .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#gviinuogqi .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#gviinuogqi .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#gviinuogqi .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#gviinuogqi .gt_row {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#gviinuogqi .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#gviinuogqi .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#gviinuogqi .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#gviinuogqi .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#gviinuogqi .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#gviinuogqi .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#gviinuogqi .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#gviinuogqi .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#gviinuogqi .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#gviinuogqi .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#gviinuogqi .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#gviinuogqi .gt_left {
-  text-align: left;
-}
-
-#gviinuogqi .gt_center {
-  text-align: center;
-}
-
-#gviinuogqi .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#gviinuogqi .gt_font_normal {
-  font-weight: normal;
-}
-
-#gviinuogqi .gt_font_bold {
-  font-weight: bold;
-}
-
-#gviinuogqi .gt_font_italic {
-  font-style: italic;
-}
-
-#gviinuogqi .gt_super {
-  font-size: 65%;
-}
-
-#gviinuogqi .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#gviinuogqi .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#gviinuogqi .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#gviinuogqi .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#gviinuogqi .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#gviinuogqi .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#gviinuogqi .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#gviinuogqi .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#gviinuogqi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_col_headings header">
-<th id="Check" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Check</th>
-<th id="Value" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Value</th>
-<th id="a%-of-films" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">% of films</th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_left" headers="Check">Films in the file</td>
-<td class="gt_row gt_left" headers="Value">4,803</td>
-<td class="gt_row gt_left" headers="% of films">100.0%</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="Check">budget = 0 (placeholder)</td>
-<td class="gt_row gt_left" headers="Value">1,037</td>
-<td class="gt_row gt_left" headers="% of films">21.6%</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="Check">0 &lt; budget &lt; USD 10,000</td>
-<td class="gt_row gt_left" headers="Value">35</td>
-<td class="gt_row gt_left" headers="% of films">0.7%</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="Check">revenue = 0 (placeholder)</td>
-<td class="gt_row gt_left" headers="Value">1,427</td>
-<td class="gt_row gt_left" headers="% of films">29.7%</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="Check">roi missing (= budget = 0 rows)</td>
-<td class="gt_row gt_left" headers="Value">1,037 (TRUE)</td>
-<td class="gt_row gt_left" headers="% of films">21.6%</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="Check">Missing genre / company / franchise</td>
-<td class="gt_row gt_left" headers="Value">28 / 351 / 0</td>
-<td class="gt_row gt_left" headers="% of films">0.6% / 7.3% / 0.0%</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="Check">Release year range</td>
-<td class="gt_row gt_left" headers="Value">1916 to 2017</td>
-<td class="gt_row gt_left" headers="% of films">—</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
-</div>
-</figure>
-</div>
-</div>
-<p><a href="#tbl-t1-audit" class="quarto-xref">Table&nbsp;1</a> lists the issues that had to be resolved first. Zero is used throughout the file as a stand-in for “unknown”: 1,037 films (21.6%) record a budget of exactly zero, 35 a positive budget below the USD 10,000 floor, and 1,427 zero revenue, while <code>roi</code> is missing on exactly those same zero-budget rows (TRUE). Identifiers are otherwise clean, with 0 duplicate IDs and only 3 repeated titles. Budgets below USD 10,000 and revenue of zero are therefore recoded as missing, and ROI is recomputed as <code>revenue_c / budget_c</code> rather than read from the file’s own column. That missingness is not random: budget coverage is 46.1% in Documentary against 90.6% in Adventure, 89.6% for franchises against 77.0% for originals, and falls from 92.6% in the 1950s to 75.3% in the 2000s. After cleaning, 3,731 films (77.7%) have a usable budget and 3,214 (66.9%) a usable ROI.</p>
+<p>The data audit identified missing and placeholder financial values. Zero is used throughout the file as a stand-in for “unknown”: 1,037 films (21.6%) record a budget of exactly zero, 35 a positive budget below the USD 10,000 floor, and 1,427 zero revenue, while <code>roi</code> is missing on exactly those same zero-budget rows (TRUE). Identifiers are otherwise clean, with 0 duplicate IDs and only 3 repeated titles. Budgets below USD 10,000 and revenue of zero are therefore recoded as missing, and ROI is recomputed as <code>revenue_c / budget_c</code> rather than read from the file’s own column. That missingness is not random: budget coverage is 46.1% in Documentary against 90.6% in Adventure, 89.6% for franchises against 77.0% for originals, and falls from 92.6% in the 1950s to 75.3% in the 2000s. After cleaning, 3,731 films (77.7%) have a usable budget and 3,214 (66.9%) a usable ROI.</p>
 </section>
 <section id="b-overall-distribution-of-budget-and-roi" class="level2">
 <h2 class="anchored" data-anchor-id="b-overall-distribution-of-budget-and-roi">1b Overall distribution of budget and ROI</h2>
@@ -606,38 +126,38 @@ Table&nbsp;1: Data quality audit of the raw film records.
 <div id="tbl-t1-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t1-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate. Values are shown to three significant figures.
+Table&nbsp;1: Distribution of production budget and ROI across the cleaned slate. Values are shown to three significant figures.
 </figcaption>
 <div aria-describedby="tbl-t1-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="qtpykxdkny" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qtpykxdkny table {
+<div id="zgbxoxfatg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zgbxoxfatg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qtpykxdkny thead, #qtpykxdkny tbody, #qtpykxdkny tfoot, #qtpykxdkny tr, #qtpykxdkny td, #qtpykxdkny th {
+#zgbxoxfatg thead, #zgbxoxfatg tbody, #zgbxoxfatg tfoot, #zgbxoxfatg tr, #zgbxoxfatg td, #zgbxoxfatg th {
   border-style: none;
 }
 
-#qtpykxdkny p {
+#zgbxoxfatg p {
   margin: 0;
   padding: 0;
 }
 
-#qtpykxdkny .gt_table {
+#zgbxoxfatg .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 9pt;
+  font-size: 16px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
-  width: 95%;
+  width: auto;
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
@@ -652,12 +172,12 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-left-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_caption {
+#zgbxoxfatg .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qtpykxdkny .gt_title {
+#zgbxoxfatg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -669,7 +189,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-bottom-width: 0;
 }
 
-#qtpykxdkny .gt_subtitle {
+#zgbxoxfatg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -681,7 +201,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-top-width: 0;
 }
 
-#qtpykxdkny .gt_heading {
+#zgbxoxfatg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -693,13 +213,13 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-right-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_bottom_border {
+#zgbxoxfatg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_col_headings {
+#zgbxoxfatg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -714,7 +234,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-right-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_col_heading {
+#zgbxoxfatg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -727,14 +247,14 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-right-width: 1px;
   border-right-color: #D3D3D3;
   vertical-align: bottom;
-  padding-top: 3px;
-  padding-bottom: 4px;
+  padding-top: 5px;
+  padding-bottom: 6px;
   padding-left: 5px;
   padding-right: 5px;
   overflow-x: hidden;
 }
 
-#qtpykxdkny .gt_column_spanner_outer {
+#zgbxoxfatg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -746,31 +266,31 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   padding-right: 4px;
 }
 
-#qtpykxdkny .gt_column_spanner_outer:first-child {
+#zgbxoxfatg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qtpykxdkny .gt_column_spanner_outer:last-child {
+#zgbxoxfatg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qtpykxdkny .gt_column_spanner {
+#zgbxoxfatg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
   vertical-align: bottom;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   overflow-x: hidden;
   display: inline-block;
   width: 100%;
 }
 
-#qtpykxdkny .gt_spanner_row {
+#zgbxoxfatg .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qtpykxdkny .gt_group_heading {
+#zgbxoxfatg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -796,7 +316,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   text-align: left;
 }
 
-#qtpykxdkny .gt_empty_group_heading {
+#zgbxoxfatg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -811,17 +331,17 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   vertical-align: middle;
 }
 
-#qtpykxdkny .gt_from_md > :first-child {
+#zgbxoxfatg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qtpykxdkny .gt_from_md > :last-child {
+#zgbxoxfatg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qtpykxdkny .gt_row {
-  padding-top: 3px;
-  padding-bottom: 3px;
+#zgbxoxfatg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -838,7 +358,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   overflow-x: hidden;
 }
 
-#qtpykxdkny .gt_stub {
+#zgbxoxfatg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -851,7 +371,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   padding-right: 5px;
 }
 
-#qtpykxdkny .gt_stub_row_group {
+#zgbxoxfatg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -865,15 +385,15 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   vertical-align: top;
 }
 
-#qtpykxdkny .gt_row_group_first td {
+#zgbxoxfatg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qtpykxdkny .gt_row_group_first th {
+#zgbxoxfatg .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qtpykxdkny .gt_summary_row {
+#zgbxoxfatg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -883,16 +403,16 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   padding-right: 5px;
 }
 
-#qtpykxdkny .gt_first_summary_row {
+#zgbxoxfatg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_first_summary_row.thick {
+#zgbxoxfatg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qtpykxdkny .gt_last_summary_row {
+#zgbxoxfatg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -902,7 +422,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-bottom-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_grand_summary_row {
+#zgbxoxfatg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -912,7 +432,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   padding-right: 5px;
 }
 
-#qtpykxdkny .gt_first_grand_summary_row {
+#zgbxoxfatg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -922,7 +442,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-top-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_last_grand_summary_row_top {
+#zgbxoxfatg .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -932,11 +452,11 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-bottom-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_striped {
+#zgbxoxfatg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qtpykxdkny .gt_table_body {
+#zgbxoxfatg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -945,7 +465,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-bottom-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_footnotes {
+#zgbxoxfatg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -959,7 +479,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-right-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_footnote {
+#zgbxoxfatg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -968,7 +488,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   padding-right: 5px;
 }
 
-#qtpykxdkny .gt_sourcenotes {
+#zgbxoxfatg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -982,7 +502,7 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   border-right-color: #D3D3D3;
 }
 
-#qtpykxdkny .gt_sourcenote {
+#zgbxoxfatg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -990,77 +510,77 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
   padding-right: 5px;
 }
 
-#qtpykxdkny .gt_left {
+#zgbxoxfatg .gt_left {
   text-align: left;
 }
 
-#qtpykxdkny .gt_center {
+#zgbxoxfatg .gt_center {
   text-align: center;
 }
 
-#qtpykxdkny .gt_right {
+#zgbxoxfatg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qtpykxdkny .gt_font_normal {
+#zgbxoxfatg .gt_font_normal {
   font-weight: normal;
 }
 
-#qtpykxdkny .gt_font_bold {
+#zgbxoxfatg .gt_font_bold {
   font-weight: bold;
 }
 
-#qtpykxdkny .gt_font_italic {
+#zgbxoxfatg .gt_font_italic {
   font-style: italic;
 }
 
-#qtpykxdkny .gt_super {
+#zgbxoxfatg .gt_super {
   font-size: 65%;
 }
 
-#qtpykxdkny .gt_footnote_marks {
+#zgbxoxfatg .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qtpykxdkny .gt_asterisk {
+#zgbxoxfatg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qtpykxdkny .gt_indent_1 {
+#zgbxoxfatg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qtpykxdkny .gt_indent_2 {
+#zgbxoxfatg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qtpykxdkny .gt_indent_3 {
+#zgbxoxfatg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qtpykxdkny .gt_indent_4 {
+#zgbxoxfatg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qtpykxdkny .gt_indent_5 {
+#zgbxoxfatg .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qtpykxdkny .katex-display {
+#zgbxoxfatg .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qtpykxdkny div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#zgbxoxfatg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="Variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Variable</th>
@@ -1078,39 +598,39 @@ Table&nbsp;2: Distribution of production budget and ROI across the cleaned slate
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="Variable">Budget (USD m)</td>
-<td class="gt_row gt_right" headers="N">3731</td>
-<td class="gt_row gt_right" headers="Missing">1072</td>
-<td class="gt_row gt_right" headers="Mean">37.390324</td>
-<td class="gt_row gt_right" headers="SD">42.6942048</td>
-<td class="gt_row gt_right" headers="Min">1.000000e-02</td>
-<td class="gt_row gt_right" headers="Q1">8.850000</td>
-<td class="gt_row gt_right" headers="Median">24.000000</td>
-<td class="gt_row gt_right" headers="Q3">50.000000</td>
-<td class="gt_row gt_right" headers="Max">380.000000</td>
+<td class="gt_row gt_right" headers="N">3,731</td>
+<td class="gt_row gt_right" headers="Missing">1,072</td>
+<td class="gt_row gt_right" headers="Mean">37.4</td>
+<td class="gt_row gt_right" headers="SD">42.7</td>
+<td class="gt_row gt_right" headers="Min">0.0100</td>
+<td class="gt_row gt_right" headers="Q1">8.85</td>
+<td class="gt_row gt_right" headers="Median">24.0</td>
+<td class="gt_row gt_right" headers="Q3">50.0</td>
+<td class="gt_row gt_right" headers="Max">380</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Variable">ROI (revenue / budget)</td>
-<td class="gt_row gt_right" headers="N">3214</td>
-<td class="gt_row gt_right" headers="Missing">1589</td>
-<td class="gt_row gt_right" headers="Mean">11.093486</td>
-<td class="gt_row gt_right" headers="SD">239.9545106</td>
-<td class="gt_row gt_right" headers="Min">5.217391e-07</td>
-<td class="gt_row gt_right" headers="Q1">1.025864</td>
-<td class="gt_row gt_right" headers="Median">2.300444</td>
-<td class="gt_row gt_right" headers="Q3">4.416902</td>
-<td class="gt_row gt_right" headers="Max">12890.386667</td>
+<td class="gt_row gt_right" headers="N">3,214</td>
+<td class="gt_row gt_right" headers="Missing">1,589</td>
+<td class="gt_row gt_right" headers="Mean">11.1</td>
+<td class="gt_row gt_right" headers="SD">240</td>
+<td class="gt_row gt_right" headers="Min">0.000000522</td>
+<td class="gt_row gt_right" headers="Q1">1.03</td>
+<td class="gt_row gt_right" headers="Median">2.30</td>
+<td class="gt_row gt_right" headers="Q3">4.42</td>
+<td class="gt_row gt_right" headers="Max">12,900</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Variable">log10 budget</td>
-<td class="gt_row gt_right" headers="N">3731</td>
-<td class="gt_row gt_right" headers="Missing">1072</td>
-<td class="gt_row gt_right" headers="Mean">7.255349</td>
-<td class="gt_row gt_right" headers="SD">0.6395044</td>
-<td class="gt_row gt_right" headers="Min">4.000000e+00</td>
-<td class="gt_row gt_right" headers="Q1">6.946936</td>
-<td class="gt_row gt_right" headers="Median">7.380211</td>
-<td class="gt_row gt_right" headers="Q3">7.698970</td>
-<td class="gt_row gt_right" headers="Max">8.579784</td>
+<td class="gt_row gt_right" headers="N">3,731</td>
+<td class="gt_row gt_right" headers="Missing">1,072</td>
+<td class="gt_row gt_right" headers="Mean">7.26</td>
+<td class="gt_row gt_right" headers="SD">0.640</td>
+<td class="gt_row gt_right" headers="Min">4.00</td>
+<td class="gt_row gt_right" headers="Q1">6.95</td>
+<td class="gt_row gt_right" headers="Median">7.38</td>
+<td class="gt_row gt_right" headers="Q3">7.70</td>
+<td class="gt_row gt_right" headers="Max">8.58</td>
 </tr>
 </tbody>
 </table>
@@ -1143,27 +663,27 @@ Figure&nbsp;1: Overall distribution of production budget (A, B) and ROI (C, D). 
 <div id="tbl-t1-franchise" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t1-franchise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214).
+Table&nbsp;2: Franchise status breakdown restricted to complete cases (N = 3,214).
 </figcaption>
 <div aria-describedby="tbl-t1-franchise-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="dxvugdiaqm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dxvugdiaqm table {
+<div id="ncsxowprzr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ncsxowprzr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dxvugdiaqm thead, #dxvugdiaqm tbody, #dxvugdiaqm tfoot, #dxvugdiaqm tr, #dxvugdiaqm td, #dxvugdiaqm th {
+#ncsxowprzr thead, #ncsxowprzr tbody, #ncsxowprzr tfoot, #ncsxowprzr tr, #ncsxowprzr td, #ncsxowprzr th {
   border-style: none;
 }
 
-#dxvugdiaqm p {
+#ncsxowprzr p {
   margin: 0;
   padding: 0;
 }
 
-#dxvugdiaqm .gt_table {
+#ncsxowprzr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1189,12 +709,12 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-left-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_caption {
+#ncsxowprzr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dxvugdiaqm .gt_title {
+#ncsxowprzr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1206,7 +726,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-bottom-width: 0;
 }
 
-#dxvugdiaqm .gt_subtitle {
+#ncsxowprzr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1218,7 +738,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-top-width: 0;
 }
 
-#dxvugdiaqm .gt_heading {
+#ncsxowprzr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1230,13 +750,13 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-right-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_bottom_border {
+#ncsxowprzr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_col_headings {
+#ncsxowprzr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1251,7 +771,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-right-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_col_heading {
+#ncsxowprzr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1271,7 +791,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   overflow-x: hidden;
 }
 
-#dxvugdiaqm .gt_column_spanner_outer {
+#ncsxowprzr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1283,15 +803,15 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   padding-right: 4px;
 }
 
-#dxvugdiaqm .gt_column_spanner_outer:first-child {
+#ncsxowprzr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dxvugdiaqm .gt_column_spanner_outer:last-child {
+#ncsxowprzr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dxvugdiaqm .gt_column_spanner {
+#ncsxowprzr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1303,11 +823,11 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   width: 100%;
 }
 
-#dxvugdiaqm .gt_spanner_row {
+#ncsxowprzr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dxvugdiaqm .gt_group_heading {
+#ncsxowprzr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1333,7 +853,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   text-align: left;
 }
 
-#dxvugdiaqm .gt_empty_group_heading {
+#ncsxowprzr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1348,15 +868,15 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   vertical-align: middle;
 }
 
-#dxvugdiaqm .gt_from_md > :first-child {
+#ncsxowprzr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dxvugdiaqm .gt_from_md > :last-child {
+#ncsxowprzr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dxvugdiaqm .gt_row {
+#ncsxowprzr .gt_row {
   padding-top: 2.5px;
   padding-bottom: 2.5px;
   padding-left: 5px;
@@ -1375,7 +895,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   overflow-x: hidden;
 }
 
-#dxvugdiaqm .gt_stub {
+#ncsxowprzr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1388,7 +908,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   padding-right: 5px;
 }
 
-#dxvugdiaqm .gt_stub_row_group {
+#ncsxowprzr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1402,15 +922,15 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   vertical-align: top;
 }
 
-#dxvugdiaqm .gt_row_group_first td {
+#ncsxowprzr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dxvugdiaqm .gt_row_group_first th {
+#ncsxowprzr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dxvugdiaqm .gt_summary_row {
+#ncsxowprzr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1420,16 +940,16 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   padding-right: 5px;
 }
 
-#dxvugdiaqm .gt_first_summary_row {
+#ncsxowprzr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_first_summary_row.thick {
+#ncsxowprzr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dxvugdiaqm .gt_last_summary_row {
+#ncsxowprzr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1439,7 +959,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-bottom-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_grand_summary_row {
+#ncsxowprzr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1449,7 +969,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   padding-right: 5px;
 }
 
-#dxvugdiaqm .gt_first_grand_summary_row {
+#ncsxowprzr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1459,7 +979,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-top-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_last_grand_summary_row_top {
+#ncsxowprzr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1469,11 +989,11 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-bottom-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_striped {
+#ncsxowprzr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dxvugdiaqm .gt_table_body {
+#ncsxowprzr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1482,7 +1002,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-bottom-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_footnotes {
+#ncsxowprzr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1496,7 +1016,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-right-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_footnote {
+#ncsxowprzr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1505,7 +1025,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   padding-right: 5px;
 }
 
-#dxvugdiaqm .gt_sourcenotes {
+#ncsxowprzr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1519,7 +1039,7 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   border-right-color: #D3D3D3;
 }
 
-#dxvugdiaqm .gt_sourcenote {
+#ncsxowprzr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1527,77 +1047,77 @@ Table&nbsp;3: Franchise status breakdown restricted to complete cases (N = 3,214
   padding-right: 5px;
 }
 
-#dxvugdiaqm .gt_left {
+#ncsxowprzr .gt_left {
   text-align: left;
 }
 
-#dxvugdiaqm .gt_center {
+#ncsxowprzr .gt_center {
   text-align: center;
 }
 
-#dxvugdiaqm .gt_right {
+#ncsxowprzr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dxvugdiaqm .gt_font_normal {
+#ncsxowprzr .gt_font_normal {
   font-weight: normal;
 }
 
-#dxvugdiaqm .gt_font_bold {
+#ncsxowprzr .gt_font_bold {
   font-weight: bold;
 }
 
-#dxvugdiaqm .gt_font_italic {
+#ncsxowprzr .gt_font_italic {
   font-style: italic;
 }
 
-#dxvugdiaqm .gt_super {
+#ncsxowprzr .gt_super {
   font-size: 65%;
 }
 
-#dxvugdiaqm .gt_footnote_marks {
+#ncsxowprzr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dxvugdiaqm .gt_asterisk {
+#ncsxowprzr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dxvugdiaqm .gt_indent_1 {
+#ncsxowprzr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dxvugdiaqm .gt_indent_2 {
+#ncsxowprzr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dxvugdiaqm .gt_indent_3 {
+#ncsxowprzr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dxvugdiaqm .gt_indent_4 {
+#ncsxowprzr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dxvugdiaqm .gt_indent_5 {
+#ncsxowprzr .gt_indent_5 {
   text-indent: 25px;
 }
 
-#dxvugdiaqm .katex-display {
+#ncsxowprzr .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#dxvugdiaqm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ncsxowprzr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
 <th id="Franchise-status" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Franchise status</th>
@@ -1665,46 +1185,91 @@ Figure&nbsp;3: Franchise proportion across whole slate (A) and focus genres (B).
 </div>
 </div>
 </div>
-<p>Horror is the cheapest focus genre (median USD 10 m) and most lucrative (median ROI 3.72, 87.8% recouped). Animation is expensive (median USD 75 m) but reliable (81.8% recouped). Drama performs weakest (median ROI 2.16). Franchise films constitute 5.4% of titles (<a href="#fig-t1-mix" class="quarto-xref">Figure&nbsp;3</a>). Among complete cases (<a href="#tbl-t1-franchise" class="quarto-xref">Table&nbsp;3</a>), franchise titles take 11.0% of budget while yielding 14.2% of revenue, outperforming originals on recoupment rate (94.1% vs 74.2%).</p>
+<p>Horror is the cheapest focus genre (median USD 10 m) and most lucrative (median ROI 3.72, 87.8% recouped). Animation is expensive (median USD 75 m) but reliable (81.8% recouped). Drama performs weakest (median ROI 2.16). Franchise films constitute 5.4% of titles (<a href="#fig-t1-mix" class="quarto-xref">Figure&nbsp;3</a>). Among complete cases (<a href="#tbl-t1-franchise" class="quarto-xref">Table&nbsp;2</a>), franchise titles take 11.0% of budget while yielding 14.2% of revenue, outperforming originals on recoupment rate (94.1% vs 74.2%).</p>
 </section>
 <section id="d-trends-over-time-and-summary-for-the-head-of-production" class="level2">
 <h2 class="anchored" data-anchor-id="d-trends-over-time-and-summary-for-the-head-of-production">1d Trends over time and summary for the Head of Production</h2>
 <div class="cell">
-<div id="tbl-t1-decade" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t1-decade-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
-</figcaption>
-<div aria-describedby="tbl-t1-decade-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="zdtfmfqzsd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zdtfmfqzsd table {
+<div id="fig-t1-time" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t1-time-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assignment_files/figure-html/fig-t1-time-1.png" class="img-fluid figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t1-time-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Decadal trends in median budget (A), median ROI (B), and franchise share (C).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Decadal figures show median budgets peaking at USD 28 million in the 1990s/2000s and stabilizing since. However, median ROI declined steadily from a peak of 7.93 in the 1970s to 1.97 in the 2000s (<a href="#fig-t1-time" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<section id="summary-for-the-head-of-production" class="level3">
+<h3 class="anchored" data-anchor-id="summary-for-the-head-of-production">Summary for the Head of Production</h3>
+<p>Only 77.7% of films have usable budgets and 66.9% usable ROI after treating placeholder financial values as missing. Coverage differs by genre, franchise status and decade, so comparisons may be affected by selection. Median budget is USD 24 million and median ROI is 2.30; 24.4% of observed films fail to recover their production budget. Medians and log scales better describe these skewed distributions than means.</p>
+<p>Horror combines low budgets with relatively high recoupment, while franchises recover production budgets more often than originals (94.1% versus 74.2% among complete cases). These patterns support selective investigation of horror and franchise projects, rather than guaranteeing their success. Median ROI fell from 7.93 in the 1970s to 1.97 in the 2000s before recovering to 2.42 in the 2010s. Historical selection and unadjusted dollar values limit comparisons across decades; box-office revenue also excludes marketing, distribution and other costs.</p>
+</section>
+</section>
+</section>
+<section id="task-2-franchise-vs.-original-investment-strategy" class="level1">
+<h1>Task 2: Franchise vs.&nbsp;Original — Investment Strategy</h1>
+<section id="a-comparing-the-two-budget-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="a-comparing-the-two-budget-distributions">2a Comparing the two budget distributions</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-t2-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t2-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assignment_files/figure-html/fig-t2-dist-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t2-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Log-10 production budget for the Franchise and Original groups across the whole dataset, with a fitted normal curve and a dashed line at each group median.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-t2-dist" class="quarto-xref">Figure&nbsp;5</a> compares the 233 franchise and 3,498 original films that carry a usable budget. Both are strongly right-skewed in raw dollars and approximately symmetric on a log-10 scale, so the two groups differ mainly in location and spread, although originals show a longer lower tail. The fitted normal curve is a reasonable approximation in the centre of each distribution, but it overstates the franchise distribution above roughly USD 300 million, where the data are sparse.</p>
+<p>Franchises are funded higher across the body of the distribution: the median is USD 40.0 million against USD 22.0 million, about 1.8 times as high, and the gap repeats at the lower quartile (USD 15.0 million against USD 8.0 million), the upper quartile (USD 90.0 million against USD 50.0 million) and the 90th percentile (USD 150 million against USD 84 million). Spread runs the other way: originals are the more dispersed group on the log scale, with a standard deviation of 0.64 against 0.56; they reach lower at the bottom, with a tenth percentile of USD 2.5 million against USD 5.0 million; and the single largest budget in the file belongs to one original film, at USD 380 million against USD 280 million for the largest franchise.</p>
+</section>
+<section id="b-a-95-interval-estimate-for-the-difference-in-medians" class="level2">
+<h2 class="anchored" data-anchor-id="b-a-95-interval-estimate-for-the-difference-in-medians">2b A 95% interval estimate for the difference in medians</h2>
+<div class="cell">
+<div id="tbl-t2-boot" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t2-boot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Bootstrap interval estimate for the difference in median budget (Franchise minus Original), from 20,000 resamples drawn within each group.
+</figcaption>
+<div aria-describedby="tbl-t2-boot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="alftjcgqcv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#alftjcgqcv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zdtfmfqzsd thead, #zdtfmfqzsd tbody, #zdtfmfqzsd tfoot, #zdtfmfqzsd tr, #zdtfmfqzsd td, #zdtfmfqzsd th {
+#alftjcgqcv thead, #alftjcgqcv tbody, #alftjcgqcv tfoot, #alftjcgqcv tr, #alftjcgqcv td, #alftjcgqcv th {
   border-style: none;
 }
 
-#zdtfmfqzsd p {
+#alftjcgqcv p {
   margin: 0;
   padding: 0;
 }
 
-#zdtfmfqzsd .gt_table {
+#alftjcgqcv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
   margin-left: auto;
   margin-right: auto;
   color: #333333;
-  font-size: 9pt;
+  font-size: 16px;
   font-weight: normal;
   font-style: normal;
   background-color: #FFFFFF;
-  width: 90%;
+  width: auto;
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
@@ -1719,12 +1284,12 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-left-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_caption {
+#alftjcgqcv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zdtfmfqzsd .gt_title {
+#alftjcgqcv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1736,7 +1301,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-bottom-width: 0;
 }
 
-#zdtfmfqzsd .gt_subtitle {
+#alftjcgqcv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1748,7 +1313,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-top-width: 0;
 }
 
-#zdtfmfqzsd .gt_heading {
+#alftjcgqcv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1760,13 +1325,13 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-right-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_bottom_border {
+#alftjcgqcv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_col_headings {
+#alftjcgqcv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1781,7 +1346,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-right-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_col_heading {
+#alftjcgqcv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1794,14 +1359,14 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-right-width: 1px;
   border-right-color: #D3D3D3;
   vertical-align: bottom;
-  padding-top: 3px;
-  padding-bottom: 4px;
+  padding-top: 5px;
+  padding-bottom: 6px;
   padding-left: 5px;
   padding-right: 5px;
   overflow-x: hidden;
 }
 
-#zdtfmfqzsd .gt_column_spanner_outer {
+#alftjcgqcv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1813,31 +1378,31 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   padding-right: 4px;
 }
 
-#zdtfmfqzsd .gt_column_spanner_outer:first-child {
+#alftjcgqcv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zdtfmfqzsd .gt_column_spanner_outer:last-child {
+#alftjcgqcv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zdtfmfqzsd .gt_column_spanner {
+#alftjcgqcv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
   vertical-align: bottom;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   overflow-x: hidden;
   display: inline-block;
   width: 100%;
 }
 
-#zdtfmfqzsd .gt_spanner_row {
+#alftjcgqcv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zdtfmfqzsd .gt_group_heading {
+#alftjcgqcv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1863,7 +1428,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   text-align: left;
 }
 
-#zdtfmfqzsd .gt_empty_group_heading {
+#alftjcgqcv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1878,17 +1443,17 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   vertical-align: middle;
 }
 
-#zdtfmfqzsd .gt_from_md > :first-child {
+#alftjcgqcv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zdtfmfqzsd .gt_from_md > :last-child {
+#alftjcgqcv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zdtfmfqzsd .gt_row {
-  padding-top: 3px;
-  padding-bottom: 3px;
+#alftjcgqcv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
   padding-left: 5px;
   padding-right: 5px;
   margin: 10px;
@@ -1905,7 +1470,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   overflow-x: hidden;
 }
 
-#zdtfmfqzsd .gt_stub {
+#alftjcgqcv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1918,7 +1483,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   padding-right: 5px;
 }
 
-#zdtfmfqzsd .gt_stub_row_group {
+#alftjcgqcv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1932,15 +1497,15 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   vertical-align: top;
 }
 
-#zdtfmfqzsd .gt_row_group_first td {
+#alftjcgqcv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zdtfmfqzsd .gt_row_group_first th {
+#alftjcgqcv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zdtfmfqzsd .gt_summary_row {
+#alftjcgqcv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1950,16 +1515,16 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   padding-right: 5px;
 }
 
-#zdtfmfqzsd .gt_first_summary_row {
+#alftjcgqcv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_first_summary_row.thick {
+#alftjcgqcv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zdtfmfqzsd .gt_last_summary_row {
+#alftjcgqcv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1969,7 +1534,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-bottom-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_grand_summary_row {
+#alftjcgqcv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1979,7 +1544,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   padding-right: 5px;
 }
 
-#zdtfmfqzsd .gt_first_grand_summary_row {
+#alftjcgqcv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1989,7 +1554,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-top-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_last_grand_summary_row_top {
+#alftjcgqcv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1999,11 +1564,11 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-bottom-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_striped {
+#alftjcgqcv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zdtfmfqzsd .gt_table_body {
+#alftjcgqcv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2012,7 +1577,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-bottom-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_footnotes {
+#alftjcgqcv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2026,7 +1591,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-right-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_footnote {
+#alftjcgqcv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2035,7 +1600,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   padding-right: 5px;
 }
 
-#zdtfmfqzsd .gt_sourcenotes {
+#alftjcgqcv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2049,7 +1614,7 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   border-right-color: #D3D3D3;
 }
 
-#zdtfmfqzsd .gt_sourcenote {
+#alftjcgqcv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2057,151 +1622,95 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
   padding-right: 5px;
 }
 
-#zdtfmfqzsd .gt_left {
+#alftjcgqcv .gt_left {
   text-align: left;
 }
 
-#zdtfmfqzsd .gt_center {
+#alftjcgqcv .gt_center {
   text-align: center;
 }
 
-#zdtfmfqzsd .gt_right {
+#alftjcgqcv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zdtfmfqzsd .gt_font_normal {
+#alftjcgqcv .gt_font_normal {
   font-weight: normal;
 }
 
-#zdtfmfqzsd .gt_font_bold {
+#alftjcgqcv .gt_font_bold {
   font-weight: bold;
 }
 
-#zdtfmfqzsd .gt_font_italic {
+#alftjcgqcv .gt_font_italic {
   font-style: italic;
 }
 
-#zdtfmfqzsd .gt_super {
+#alftjcgqcv .gt_super {
   font-size: 65%;
 }
 
-#zdtfmfqzsd .gt_footnote_marks {
+#alftjcgqcv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zdtfmfqzsd .gt_asterisk {
+#alftjcgqcv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zdtfmfqzsd .gt_indent_1 {
+#alftjcgqcv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zdtfmfqzsd .gt_indent_2 {
+#alftjcgqcv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zdtfmfqzsd .gt_indent_3 {
+#alftjcgqcv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zdtfmfqzsd .gt_indent_4 {
+#alftjcgqcv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zdtfmfqzsd .gt_indent_5 {
+#alftjcgqcv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#zdtfmfqzsd .katex-display {
+#alftjcgqcv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#zdtfmfqzsd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#alftjcgqcv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <thead>
 <tr class="gt_col_headings header">
-<th id="decade" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">decade</th>
-<th id="Years" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Years</th>
-<th id="Films" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Films</th>
-<th id="Median-budget-(USD-m)" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Median budget (USD m)</th>
-<th id="Median-ROI" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Median ROI</th>
-<th id="a%-Franchise" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">% Franchise</th>
+<th id="Quantity" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Quantity</th>
+<th id="Estimate" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Estimate</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_left" headers="decade">1940s</td>
-<td class="gt_row gt_right" headers="Years">1940-1949</td>
-<td class="gt_row gt_right" headers="Films">25</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">2.1</td>
-<td class="gt_row gt_right" headers="Median ROI">4.62</td>
-<td class="gt_row gt_right" headers="% Franchise">0.0</td>
+<td class="gt_row gt_left" headers="Quantity">Observed difference (USD m)</td>
+<td class="gt_row gt_left" headers="Estimate">18.0</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="decade">1950s</td>
-<td class="gt_row gt_right" headers="Years">1950-1959</td>
-<td class="gt_row gt_right" headers="Films">27</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">2.9</td>
-<td class="gt_row gt_right" headers="Median ROI">5.64</td>
-<td class="gt_row gt_right" headers="% Franchise">0.0</td>
+<td class="gt_row gt_left" headers="Quantity">Bootstrap standard error (USD m)</td>
+<td class="gt_row gt_left" headers="Estimate">3.74</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="decade">1960s</td>
-<td class="gt_row gt_right" headers="Years">1960-1969</td>
-<td class="gt_row gt_right" headers="Films">71</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">3.5</td>
-<td class="gt_row gt_right" headers="Median ROI">4.33</td>
-<td class="gt_row gt_right" headers="% Franchise">0.0</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="decade">1970s</td>
-<td class="gt_row gt_right" headers="Years">1970-1979</td>
-<td class="gt_row gt_right" headers="Films">109</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">4.8</td>
-<td class="gt_row gt_right" headers="Median ROI">7.93</td>
-<td class="gt_row gt_right" headers="% Franchise">2.8</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="decade">1980s</td>
-<td class="gt_row gt_right" headers="Years">1980-1989</td>
-<td class="gt_row gt_right" headers="Films">278</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">13.0</td>
-<td class="gt_row gt_right" headers="Median ROI">3.97</td>
-<td class="gt_row gt_right" headers="% Franchise">12.6</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="decade">1990s</td>
-<td class="gt_row gt_right" headers="Years">1990-1999</td>
-<td class="gt_row gt_right" headers="Films">778</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">28.0</td>
-<td class="gt_row gt_right" headers="Median ROI">2.10</td>
-<td class="gt_row gt_right" headers="% Franchise">4.5</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="decade">2000s</td>
-<td class="gt_row gt_right" headers="Years">2000-2009</td>
-<td class="gt_row gt_right" headers="Films">2048</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">28.0</td>
-<td class="gt_row gt_right" headers="Median ROI">1.97</td>
-<td class="gt_row gt_right" headers="% Franchise">4.1</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="decade">2010s</td>
-<td class="gt_row gt_right" headers="Years">2010-2017</td>
-<td class="gt_row gt_right" headers="Films">1446</td>
-<td class="gt_row gt_right" headers="Median budget (USD m)">25.0</td>
-<td class="gt_row gt_right" headers="Median ROI">2.42</td>
-<td class="gt_row gt_right" headers="% Franchise">7.2</td>
+<td class="gt_row gt_left" headers="Quantity">95% percentile interval (USD m)</td>
+<td class="gt_row gt_left" headers="Estimate">9.0 to 26.0</td>
 </tr>
 </tbody>
 </table>
@@ -2212,25 +1721,393 @@ Table&nbsp;4: Slate composition by decade (decades with N &gt;= 20).
 </figure>
 </div>
 </div>
+<p>The observed difference in median budget, franchise minus original, is USD 18.0 million. Resampling 20,000 times within each group gives a bootstrap standard error of USD 3.74 million and a 95% percentile interval of USD 9.0 million to USD 26.0 million (<a href="#tbl-t2-boot" class="quarto-xref">Table&nbsp;3</a>). The 95% bootstrap interval lies entirely above zero, providing evidence that the population median budget is higher for franchise films than for original films. It is nonetheless wide relative to the estimate, which is expected given only 233 franchise films and a heavily skewed budget variable, so the gap is better read as a substantial difference in the median budget than as a precise figure.</p>
+</section>
+<section id="c-does-the-evidence-support-leaderships-concern" class="level2">
+<h2 class="anchored" data-anchor-id="c-does-the-evidence-support-leaderships-concern">2c Does the evidence support leadership’s concern?</h2>
+<p>The cost half of the concern holds up. Franchises are funded higher at the median, at both quartiles and at the 90th percentile, and the interval in <a href="#tbl-t2-boot" class="quarto-xref">Table&nbsp;3</a> provides evidence that franchise films have a higher population median budget. A typical original film is smaller than a typical franchise film at every quantile reported, so “the original slate is cheaper” is correct as stated.</p>
+<p>What does not hold up is the description of that slate as “mostly small, low-budget projects”. Only 26.8% of original films carry a budget below USD 10 million, against 17.6% of franchises, and even on the more generous reading of “small” as under USD 20 million, fewer than half of originals qualify (44.8%). The middle half of the original slate runs from USD 8.0 million to USD 50.0 million, which is mid-budget rather than micro-budget. Originals are also the more dispersed group, as <a href="#fig-t2-dist" class="quarto-xref">Figure&nbsp;5</a> shows, but that extra spread sits at the cheap end of the range rather than the top.</p>
+<p>The revenue premise is not supported. Among the 3,214 films with complete financials, franchise titles are only 6.9% of the slate, take 11.0% of production budget and generate 14.2% of revenue. A group producing 14.2% of revenue is a valuable group, but it is not carrying the studio, and describing it that way overstates both its current weight and the risk of shifting the slate towards originals. What the franchise group genuinely provides is reliability rather than volume: 94.1% of franchise titles recoup their production budget against 74.2% of originals.</p>
+</section>
+<section id="d-recommended-strategy" class="level2">
+<h2 class="anchored" data-anchor-id="d-recommended-strategy">2d Recommended strategy</h2>
+<p><strong>Keep the franchise pipeline.</strong> Franchise titles convert 11.0% of production budget into 14.2% of revenue and recoup at 94.1%, against 74.2% for originals. Cutting the pipeline to make room for originals would trade a dependable engine for a cheaper but more variable investment, and nothing in the evidence requires that trade.</p>
+<p><strong>Grow the original slate selectively.</strong> The comparison does not say originals are a bad investment; it says they are cheaper and more variable. The lowest-risk way to add original volume is to fund it where low cost and high recoupment already coincide. Horror is the clearest case: original horror films recoup at 85.2%, well above the 74.2% that originals achieve as a whole, on a median budget of only USD 12 million. Mid-budget Drama, by contrast, is the weakest category in the slate. Pilot a small number of titles before committing a full slate.</p>
+<p><strong>Balance.</strong> Concretely, keep franchise spending at roughly its current level in dollar terms and direct incremental spend to originals, expanding that program only once the pilot titles recoup at rates approaching the original horror benchmark of 85.2%; note that pilot sample sizes will be small and can only provide directional evidence. That preserves the dependable half of the slate while buying evidence on the more variable half, rather than committing to it on the strength of the budget gap alone.</p>
+<p><strong>Caveats.</strong> The comparison is descriptive rather than causal: genre mix and release era differ between the two groups and neither is controlled for here, so the budget gap cannot be read as the price of the franchise label. The revenue shares and recoupment rates are complete-case figures covering 3,214 of the 3,731 films with a usable budget, leaving 13.9% of that group excluded; if missing revenue is concentrated among weaker performers, the recoupment rates reported here are optimistic. Revenue in the file is also gross rather than net of distribution, marketing and participation, so recoupment measures whether a film matched its production budget, not whether it made money for the studio.</p>
+</section>
+</section>
+<section id="task-3-modelling-budgets-downside-risk" class="level1">
+<h1>Task 3: Modelling Budgets &amp; Downside Risk</h1>
+<section id="a-modelling-universal-pictures-production-budgets" class="level2">
+<h2 class="anchored" data-anchor-id="a-modelling-universal-pictures-production-budgets">3a Modelling Universal Pictures’ production budgets</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-t1-time" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-t3-budget-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-t1-time-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="assignment_files/figure-html/fig-t1-time-1.png" class="img-fluid figure-img" width="960">
+<div aria-describedby="fig-t3-budget-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assignment_files/figure-html/fig-t3-budget-dist-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t1-time-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Decadal trends in median budget (A), median ROI (B), and franchise share (C).
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t3-budget-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Distribution of production budgets for Universal Pictures films.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Decadal figures show median budgets peaking at USD 28 million in the 1990s/2000s and stabilizing since. However, median ROI declined steadily from a peak of 7.93 in the 1970s to 1.97 in the 2000s (<a href="#fig-t1-time" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  skewness
+     &lt;dbl&gt;
+1     1.57</code></pre>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-t3-aic" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t3-aic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: AIC comparison of candidate models for Universal Pictures production budgets.
+</figcaption>
+<div aria-describedby="tbl-t3-aic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Distribution</th>
+<th style="text-align: right;">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Gamma</td>
+<td style="text-align: right;">2320.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log-normal</td>
+<td style="text-align: right;">2349.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Normal</td>
+<td style="text-align: right;">2454.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-t3-budget-qq" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-t3-budget-qq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assignment_files/figure-html/fig-t3-budget-qq-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-t3-budget-qq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Q–Q plots comparing normal, log-normal and gamma models for Universal Pictures production budgets.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>After excluding invalid and placeholder budget values below US$10,000, 243 Universal Pictures films remained. The budget distribution (<a href="#fig-t3-budget-dist" class="quarto-xref">Figure&nbsp;6</a>) was positively skewed, with a sample skewness of 1.57, suggesting that a symmetric normal distribution may be unsuitable.</p>
+<p>Three candidate distributions were fitted: normal, log-normal and gamma. The gamma distribution achieved the lowest AIC (2320.1), compared with 2349.2 for the log-normal distribution and 2454.1 for the normal distribution (<a href="#tbl-t3-aic" class="quarto-xref">Table&nbsp;4</a>). The Q–Q plots (<a href="#fig-t3-budget-qq" class="quarto-xref">Figure&nbsp;7</a>) also suggest that the gamma model provides the closest overall fit, although some deviations remain in the upper tail. Therefore, among the three candidates, the gamma distribution is the preferred model for describing Universal Pictures film budgets.</p>
 </section>
-<section id="summary-for-the-head-of-production" class="level2">
-<h2 class="anchored" data-anchor-id="summary-for-the-head-of-production">Summary for the Head of Production</h2>
-<p>Data Completeness: Only 77.7% of films have reliable budgets and 66.9% have reliable ROI. Unreported figures disproportionately occur in low-performing genres (Comedies/Dramas) and older eras, meaning raw financial averages slightly overstate true performance. Skewness &amp; Metrics: Budget and ROI are heavily right-skewed (24.4% fail to reach 1x ROI). Medians and log-scales must guide strategic decisions rather than means. Portfolio Strategy: Horror provides low capital risk and top ROI (87.8% recouped). Animation warrants big budgets due to high reliability (81.8% recouped). Action carries high risk (25% fail to recover costs), while Drama shows consistently low returns. Franchises deliver superior returns (94.1% recoupment) and represent high-value investments. Temporal Risk: Modern slate greenlighting faces a tighter margin environment than historical periods. Greenlighting priority should be given to low-budget horror and scalable franchise concepts over mid-budget standalone dramas.</p>
+<section id="b-estimating-the-25th-percentile-of-action-roi" class="level2">
+<h2 class="anchored" data-anchor-id="b-estimating-the-25th-percentile-of-action-roi">3b Estimating the 25th percentile of Action ROI</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  total_rows has_genre has_budget has_revenue
+       &lt;int&gt; &lt;lgl&gt;     &lt;lgl&gt;      &lt;lgl&gt;      
+1       4803 TRUE      TRUE       TRUE       </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+      n roi_q25 roi_median roi_min roi_max
+  &lt;int&gt;   &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1   588   0.907       1.98 0.00153    101.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-t3-roi-ci" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t3-roi-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Estimated 25th percentile of Action-film ROI and 95% confidence intervals.
+</figcaption>
+<div aria-describedby="tbl-t3-roi-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Method</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower 95% CI</th>
+<th style="text-align: right;">Upper 95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bootstrap percentile</td>
+<td style="text-align: right;">0.907</td>
+<td style="text-align: right;">0.798</td>
+<td style="text-align: right;">1.052</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Order statistic</td>
+<td style="text-align: right;">0.907</td>
+<td style="text-align: right;">0.794</td>
+<td style="text-align: right;">1.072</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>For Action films across all studios, the estimated 25th percentile of ROI was 0.907. The bootstrap percentile 95% confidence interval was [0.798, 1.052], while the order-statistic interval was [0.794, 1.072]. Both methods produced the same point estimate, with the order-statistic interval slightly wider. The results suggest that the lower quartile of Action-film ROI is close to 1, although uncertainty remains around this benchmark.</p>
+</section>
+<section id="c-comparison-of-the-percentile-estimators" class="level2">
+<h2 class="anchored" data-anchor-id="c-comparison-of-the-percentile-estimators">3c Comparison of the percentile estimators</h2>
+<p>Both methods estimate the 25th percentile as 0.907 and give similar 95% confidence intervals (<a href="#tbl-t3-roi-ci" class="quarto-xref">Table&nbsp;5</a>). The order-statistic interval is slightly wider. The bootstrap method resamples the observed films, whereas the order-statistic method uses ranked observations and binomial probabilities to obtain interval bounds. Both intervals include 1, so the population lower quartile could lie on either side of the production-budget recoupment benchmark.</p>
+</section>
+<section id="d-recommendation-for-finance" class="level2">
+<h2 class="anchored" data-anchor-id="d-recommendation-for-finance">3d Recommendation for Finance</h2>
+<p>For the budget simulator, we recommend the gamma distribution for Universal Pictures’ production budgets because it has the lowest AIC among the three candidates and is supported by the Q–Q diagnostics. This model provides a historical benchmark rather than a guarantee of Meridian’s future cost structure.</p>
+<p>For the Action slate, Finance should plan around a lower-quartile ROI of approximately 0.91: about one quarter of films in the observed sample earned less than 91 cents in worldwide box-office revenue per dollar of production budget. The two 95% confidence intervals are approximately 0.80–1.05 and 0.79–1.07, indicating uncertainty around the 1x production-budget recoupment benchmark. This figure describes the lower quarter of the observed revenue-to-budget ratios and should not be interpreted as a prediction for an individual film. ROI is calculated using reported worldwide box-office revenue and production budget; it does not account for marketing, distribution or other costs. Missing financial records and the historical nature of the sample should also be considered when applying these findings to future greenlighting decisions.</p>
+</section>
+</section>
+<section id="task-4-building-a-greenlight-risk-model" class="level1">
+<h1>Task 4: Building a Greenlight Risk Model</h1>
+<section id="a-outcome-and-analysis-sample" class="level2">
+<h2 class="anchored" data-anchor-id="a-outcome-and-analysis-sample">4a Outcome and analysis sample</h2>
+<p>A flop is defined as worldwide box-office revenue below production budget (ROI &lt; 1). Logistic regression suits this binary outcome and constrains fitted probabilities to 0–1; ordinary linear regression does not, while Poisson regression models counts. Budgets below USD 10,000 and non-positive revenues were excluded as missing placeholders. We used films released by 2016 in Meridian’s five focus genres, retaining complete predictor records. The resulting 2,256 films included 574 flops (25.4%). Results apply to this observed financial-data subset, not all releases.</p>
+</section>
+<section id="b-frequentist-and-bayesian-models" class="level2">
+<h2 class="anchored" data-anchor-id="b-frequentist-and-bayesian-models">4b Frequentist and Bayesian models</h2>
+<p>Both models used genre, franchise status, natural-log budget and cast size per ten actors, with Drama and Original as reference categories. A stratified 80/20 split (seed 24205242) produced 1,804 training and 452 test films. Recorded cast size approximates planned cast size: use at greenlight requires a credible advance estimate, rather than information learned after release. We assume independent film outcomes and additive, linear effects of log budget and cast size on log-odds; related franchise films may challenge independence.</p>
+<p>Weakly informative priors were Normal(0, 1) for slopes and Normal(0, 2.5) for the internally centred intercept, on the log-odds scale. A slope prior places about 95% probability on odds ratios between 0.14 and 7.10 per predictor unit. Four chains yielded 12,000 post-warmup draws. Maximum R-hat was 1.001, with 0 divergences and 0 maximum-tree-depth hits; the inspected trace plots showed good mixing.</p>
+<div class="cell">
+<div id="tbl-t4-models" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t4-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Adjusted odds ratios: frequentist 95% confidence intervals and Bayesian 95% credible intervals.
+</figcaption>
+<div aria-describedby="tbl-t4-models-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Predictor</th>
+<th style="text-align: left;">Frequentist OR (95% CI)</th>
+<th style="text-align: left;">Bayesian OR (95% CrI)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Action vs Drama</td>
+<td style="text-align: left;">1.03 (0.78–1.37)</td>
+<td style="text-align: left;">1.04 (0.79–1.37)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Animation vs Drama</td>
+<td style="text-align: left;">0.49 (0.27–0.90)</td>
+<td style="text-align: left;">0.51 (0.28–0.90)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Comedy vs Drama</td>
+<td style="text-align: left;">0.75 (0.57–0.99)</td>
+<td style="text-align: left;">0.77 (0.58–1.01)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Horror vs Drama</td>
+<td style="text-align: left;">0.34 (0.20–0.59)</td>
+<td style="text-align: left;">0.36 (0.22–0.58)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Franchise vs Original</td>
+<td style="text-align: left;">0.24 (0.12–0.48)</td>
+<td style="text-align: left;">0.27 (0.14–0.48)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log budget (+1)</td>
+<td style="text-align: left;">1.07 (0.98–1.17)</td>
+<td style="text-align: left;">1.07 (0.98–1.16)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cast size (+10)</td>
+<td style="text-align: left;">0.81 (0.76–0.87)</td>
+<td style="text-align: left;">0.81 (0.75–0.87)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The two approaches agree closely (<a href="#tbl-t4-models" class="quarto-xref">Table&nbsp;6</a>). Holding other predictors fixed, franchise films have lower flop odds: OR 0.24 (CI 0.12–0.48), versus Bayesian OR 0.27 (CrI 0.14–0.48). Ten additional cast members are associated with OR 0.81 under both models (approximately 0.75–0.87). These are associations, not causal effects or percentage-point probability changes. All 12,000 sampled franchise coefficients were negative, estimating the posterior probability of lower franchise flop odds as approximately 100%, conditional on the model and priors. Comedy is borderline: its frequentist interval narrowly excludes 1, whereas its Bayesian interval includes 1. A confidence interval describes repeated-sampling coverage; a credible interval describes posterior uncertainty under the specified model.</p>
+</section>
+<section id="c-test-set-performance" class="level2">
+<h2 class="anchored" data-anchor-id="c-test-set-performance">4c Test-set performance</h2>
+<p>We used the training flop proportion (0.254) as a screening threshold, with 0.50 as a benchmark. This deliberately gives more attention to possible flops, which are the minority class. The threshold was not optimised on the test set and does not represent a proven optimal business cost trade-off.</p>
+<div class="cell">
+<div id="tbl-t4-performance" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t4-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: Held-out performance (%); flop is the positive outcome. A dash denotes undefined precision.
+</figcaption>
+<div aria-describedby="tbl-t4-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Threshold</th>
+<th style="text-align: left;">Accuracy</th>
+<th style="text-align: left;">Sensitivity</th>
+<th style="text-align: left;">Specificity</th>
+<th style="text-align: left;">Precision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Frequentist</td>
+<td style="text-align: left;">0.500</td>
+<td style="text-align: left;">74.6</td>
+<td style="text-align: left;">0.0</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Frequentist</td>
+<td style="text-align: left;">0.254</td>
+<td style="text-align: left;">52.7</td>
+<td style="text-align: left;">75.7</td>
+<td style="text-align: left;">44.8</td>
+<td style="text-align: left;">31.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bayesian</td>
+<td style="text-align: left;">0.500</td>
+<td style="text-align: left;">74.6</td>
+<td style="text-align: left;">0.0</td>
+<td style="text-align: left;">100.0</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bayesian</td>
+<td style="text-align: left;">0.254</td>
+<td style="text-align: left;">53.5</td>
+<td style="text-align: left;">74.8</td>
+<td style="text-align: left;">46.3</td>
+<td style="text-align: left;">32.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-t4-confusion" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t4-confusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8: Bayesian screening confusion matrix: rows are actual outcomes; columns are predictions.
+</figcaption>
+<div aria-describedby="tbl-t4-confusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Non-flop</th>
+<th style="text-align: right;">Flop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Non-flop</td>
+<td style="text-align: right;">156</td>
+<td style="text-align: right;">181</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Flop</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">86</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>At 0.50 both models predict no flops: 74.6% accuracy merely matches always predicting non-flop. At the lower threshold, the Bayesian model detects 86 of 115 flops (74.8% sensitivity), but falsely flags 181 non-flops; precision is only 32.2%. It therefore supports further review rather than automatic rejection. Neither discrimination nor future performance is guaranteed by these results from one random split.</p>
+</section>
+<section id="d-pitches-and-advice-to-the-head-of-production" class="level2">
+<h2 class="anchored" data-anchor-id="d-pitches-and-advice-to-the-head-of-production">4d Pitches and advice to the Head of Production</h2>
+<div class="cell">
+<div id="tbl-t4-pitches" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-t4-pitches-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9: Hypothetical pitches: posterior mean flop probabilities and 95% credible intervals.
+</figcaption>
+<div aria-describedby="tbl-t4-pitches-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 20%">
+<col style="width: 6%">
+<col style="width: 27%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Pitch</th>
+<th style="text-align: right;">Budget (USD m)</th>
+<th style="text-align: right;">Cast</th>
+<th style="text-align: left;">Flop % (95% CrI)</th>
+<th style="text-align: left;">Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Original horror</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">15.29 (9.79–21.82)</td>
+<td style="text-align: left;">Conditional go</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Original drama</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">29.68 (25.98–33.61)</td>
+<td style="text-align: left;">Hold for review</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Franchise action</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: left;">8.79 (4.49–14.55)</td>
+<td style="text-align: left;">Conditional go</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><strong>Management summary.</strong> Provisionally support the horror and franchise-action pitches, subject to normal commercial and budget checks. Hold the original drama for closer review of its costs and revenue assumptions. The intervals quantify uncertainty in each estimated probability, not the outcome of one film. This model is a screening aid: many flags are false alarms, and lower flop probability does not imply higher profit or smaller financial exposure. Results concern five genres with reported financial data; historical selection, franchise dependence and uncertain planned cast sizes limit generalisation. Box office is not studio receipts, and the outcome excludes marketing, distribution and other costs. No pitch is guaranteed to be profitable.</p>
 </section>
 </section>
 
