@@ -961,7 +961,7 @@ To ensure quality and cohesion, every task must have at least one “Analyst” 
 | **Task 1** | Yunhui Fan | Jingye Li, Qingqing Yu | 14 October |
 | **Task 2** | Yunhui Fan | Qingqing Yu, Jingye Li | 15 October |
 | **Task 3** | Qingqing Yu | Jingye Li, Yunhui Fan | 16 October |
-| **Task 4** | Jingye Li | Yunhui Fan, Qingqing Yu | 16 October |
+| **Task 4** | Jingye Li | Qingqing Yu, Yunhui Fan | 16 October |
 | **Final merging, formatting & reproducibility check** | Jingye Li | Qingqing Yu, Yunhui Fan | 21 October |
 
 ## Meeting schedule
